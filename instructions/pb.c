@@ -7,26 +7,15 @@ Do nothing if a is empty
 
 */
 
-void	pb(t_list **a, t_list **b)
+void pb(t_list **a, t_list **b)
 {
-    t_list	*temp;
-	t_list	*buf;
-	void	*moved;
-	int		first;
+	t_list *temp;
 
-	first = 0;
-	temp = *a;
-	while (temp)
+	if (*a)
 	{
-		buf = temp->next;
-        if (!first)
-        {
-            moved = temp->content;
-		    ft_lstadd_front(b, ft_lstnew(moved));
-		    free(moved);
-		    free(temp);
-        }
-        first++;
-		temp = buf;
+		temp = *a;
+		*a = temp->next;
+		temp->next = NULL;
+		ft_lstadd_front(b, temp);  // Add temp to the front of b
 	}
 }

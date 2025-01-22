@@ -9,14 +9,15 @@ The first element becomes the last one.
 
 void	rb(t_list **b)
 {
-    t_list	*ptr_b;
+	t_list	*ptr;
+	t_list	*next;
 
-	ptr_b = *b;
-	while (ptr_b)
+	if (*b && (*b)->next)
 	{
-		ft_lstadd_back(b, ft_lstnew(ptr_b->content));
-		free(ptr_b->content);
-		free(ptr_b);
-		break;
+		ptr = *b;
+		next = ptr->next;
+        ptr->next = NULL;
+		*b = next;
+        ft_lstadd_back(b, ptr);
 	}
 }

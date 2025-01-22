@@ -9,25 +9,13 @@ Do nothing if b is empty.
 
 void	pa(t_list **a, t_list **b)
 {    
-	t_list	*temp;
-	t_list	*buf;
-	void	*moved;
-	int		first;
+	t_list *temp;
 
-	first = 0;
-	temp = *b;
-	if (*b && ft_lstsize(*b) > 1)
-    while (temp)
+	if (*b)
 	{
-		buf = temp->next;
-        if (!first)
-        {
-            moved = temp->content;
-		    ft_lstadd_front(a, ft_lstnew(moved));
-		    free(moved);
-		    free(temp);
-        }
-        first++;
-		temp = buf;
+		temp = *b;
+		*b = temp->next;
+		temp->next = NULL;
+		ft_lstadd_front(a, temp);
 	}
 }
