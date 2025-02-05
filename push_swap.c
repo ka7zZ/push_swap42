@@ -43,39 +43,105 @@ void	see_stack(t_list *s)
 	ft_putstr_fd("a/b\n", 1);
 }
 
-int	main(int argc, char **argv)
+void	free_stack(t_list *stack)
 {
-	int	i;
-	t_list	*stack_a;
-	t_list	*stack_b;
 	t_list	*ptr_a;
-	t_list	*ptr_b;
-	t_list	*ptr_sa;
-	t_list	*ptr_push;
 
-	if (argc < 2)
-		return (0);
-	if (argc == 2)
+	while (stack)
 	{
-		ft_putstr_fd("Error\n", 1);
-		return (0);
+		ptr_a = stack->next;
+		free(stack->content);
+		free(stack);
+		stack = ptr_a;
 	}
+	free(stack);
+}
+
+static int	check_duplicate(t_list *stack_a)
+{
+	t_list	*ptr;
+	t_list	*ptr2;
+	int		n;
+	int		cmp;
+
+	ptr = stack_a;
+	while (ptr)
+	{
+		ptr2 = ptr->next;
+		n = ft_atoi((const char *)ptr->content);
+		while (ptr2)
+		{
+			cmp = ft_atoi((const char *)ptr2->content);
+			if (n == cmp)
+				return (1);
+			ptr2 = ptr2->next;
+		}
+		ptr = ptr->next;
+	}
+	return (0);
+}
+
+static int	split_case(t_list **stack_a, char *argv)
+{
+	char	**split_case;
+	char	**temp;
+	int		idx;
+
+	split_case = ft_split(argv, ' ');
+	temp = split_case;
+	while (*split_case)
+	{
+		ft_lstadd_back(stack_a, ft_lstnew(ft_itoa(ft_atoi(*split_case))));
+		free(*split_case);
+		split_case++;
+	}
+	free(temp);
+	split_case = NULL;
+	return (1);
+}
+
+int	check_values(t_list **stack_a, char **argv)
+{
+	int		i;
+	t_list	*ptr;
+
 	i = 0;
 	while (argv[++i])
 	{
-		if (!ft_atoi(argv[i]))
-			return (ft_putstr_fd("Error\n", 1), 0);
+		if (ft_strchr(argv[i], ' '))
+			split_case(stack_a, argv[i]);
+		else if (!ft_atoi(argv[i]) && !ft_strchr(argv[i], ' '))
+			return (0);
+		else
+		{
+			if (!stack_a)
+				*stack_a = ft_lstnew(ft_itoa(ft_atoi(argv[i])));
+			else
+				ft_lstadd_back(stack_a, ft_lstnew(ft_itoa(ft_atoi(argv[i]))));
+		}
 	}
-	ft_putstr_fd("Checked successfully that all parameters are numbers!\n", 1);
+	if (check_duplicate(*stack_a))
+			return (0);
+	return (1);
+}
+
+int	main(int argc, char **argv)
+{
+	t_list	*stack_a;
+	t_list	*stack_b;
+	t_list	*ptr_a;
+	char	**split_case;
+	char	**temp;
+	int		i_split;
+	int		i;
+
+	if (argc < 2)
+		return (ft_putstr_fd("Error\n", 1), 0);
 	i = 0;
 	stack_a = NULL;
-	while (argv[i++])
-	{
-		if (!stack_a)
-			stack_a = ft_lstnew(argv[i]);
-		else
-			ft_lstadd_back(&stack_a, ft_lstnew(argv[i]));
-	}
+	if (!check_values(&stack_a, argv))
+		return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
+	ft_putstr_fd("Checked successfully that all parameters are numbers!\n", 1);
 	ft_putstr_fd("Added successfully all the data to stack_a\n", 1);
 	ft_putstr_fd("\n\n\nDone.\nNow the tests of instructions:\n\n", 1);
 	stack_b = ft_lstnew(NULL);
@@ -113,5 +179,6 @@ int	main(int argc, char **argv)
 	pa(&stack_a, &stack_b);
 	pa(&stack_a, &stack_b);
 	see_stacks(stack_a, stack_b);
+	free_stack(stack_a);
 	return (0);
 }
