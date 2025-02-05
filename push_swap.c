@@ -113,6 +113,5 @@ int	main(int argc, char **argv)
 	pa(&stack_a, &stack_b);
 	pa(&stack_a, &stack_b);
 	see_stacks(stack_a, stack_b);
-
 	return (0);
 }
