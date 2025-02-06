@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-void	see_stacks(t_list *a, t_list *b)
+static void	see_stacks(t_list *a, t_list *b)
 {
 	t_list	*stack_a;
 	t_list	*stack_b;
@@ -29,11 +29,11 @@ void	see_stacks(t_list *a, t_list *b)
 	ft_printf("\na\tb\n");
 }
 
-void	see_stack(t_list *s)
+static void	see_stack(t_list *stack)
 {
 	t_list *ptr;
 
-	ptr = s;
+	ptr = stack;
 	while (ptr)
 	{
 		ft_printf("%s\n", ptr->content);
@@ -43,7 +43,7 @@ void	see_stack(t_list *s)
 	ft_putstr_fd("a/b\n", 1);
 }
 
-void	free_stack(t_list *stack)
+static void	free_stack(t_list *stack)
 {
 	t_list	*ptr_a;
 
@@ -57,94 +57,66 @@ void	free_stack(t_list *stack)
 	free(stack);
 }
 
-static int	check_duplicate(t_list *stack_a)
+static void		push_and_sort(t_list **stack_a, t_list **stack_b, int check_digits)
 {
-	t_list	*ptr;
-	t_list	*ptr2;
-	int		n;
-	int		cmp;
+	t_list	*buf;
+	int		digits;
 
-	ptr = stack_a;
+	buf = *(stack_a)->next;
+	digits = ft_strlen(*(stack_a)->content);
+	if (ft_strchr(*(stack_a)->content, '-'))
+		digits--;
+	if (digits != check_digits)
+		ra(stack_a);
+}
+
+static void	digits(t_list **stack_a, t_list **stack_b)
+{
+	t_list 		*ptr;
+	size_t		digits;
+	size_t		check_digits;
+
+	ptr = *stack_a;
+	digits = 0;
+	check_digits = 0;
 	while (ptr)
 	{
-		ptr2 = ptr->next;
-		n = ft_atoi((const char *)ptr->content);
-		while (ptr2)
-		{
-			cmp = ft_atoi((const char *)ptr2->content);
-			if (n == cmp)
-				return (1);
-			ptr2 = ptr2->next;
-		}
+		digits = ft_strlen(ptr->content);
+		if (ft_strchr(ptr->content, '-'))
+			digits--;
+		if (digits > check_digits)
+			check_digits = digits;
 		ptr = ptr->next;
 	}
-	return (0);
-}
-
-static int	split_case(t_list **stack_a, char *argv)
-{
-	char	**split_case;
-	char	**temp;
-	int		idx;
-
-	split_case = ft_split(argv, ' ');
-	temp = split_case;
-	while (*split_case)
-	{
-		ft_lstadd_back(stack_a, ft_lstnew(ft_itoa(ft_atoi(*split_case))));
-		free(*split_case);
-		split_case++;
-	}
-	free(temp);
-	split_case = NULL;
-	return (1);
-}
-
-int	check_values(t_list **stack_a, char **argv)
-{
-	int		i;
-	t_list	*ptr;
-
-	i = 0;
-	while (argv[++i])
-	{
-		if (ft_strchr(argv[i], ' '))
-			split_case(stack_a, argv[i]);
-		else if (!ft_atoi(argv[i]) && !ft_strchr(argv[i], ' '))
-			return (0);
-		else
-		{
-			if (!stack_a)
-				*stack_a = ft_lstnew(ft_itoa(ft_atoi(argv[i])));
-			else
-				ft_lstadd_back(stack_a, ft_lstnew(ft_itoa(ft_atoi(argv[i]))));
-		}
-	}
-	if (check_duplicate(*stack_a))
-			return (0);
-	return (1);
+	push_and_sort(stack_a, stack_b, check_digits);
 }
 
 int	main(int argc, char **argv)
 {
 	t_list	*stack_a;
 	t_list	*stack_b;
-	t_list	*ptr_a;
-	char	**split_case;
-	char	**temp;
-	int		i_split;
-	int		i;
 
 	if (argc < 2)
 		return (ft_putstr_fd("Error\n", 1), 0);
-	i = 0;
 	stack_a = NULL;
-	if (!check_values(&stack_a, argv))
+	stack_b = ft_lstnew(NULL);
+	if (!check_av(&stack_a, argv))
 		return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
+	see_stack(stack_a);
 	ft_putstr_fd("Checked successfully that all parameters are numbers!\n", 1);
 	ft_putstr_fd("Added successfully all the data to stack_a\n", 1);
+	digits(&stack_a, &stack_b);
+	see_stacks(stack_a, stack_b);
+	if (stack_b)
+		free_stack(stack_b);
+	free_stack(stack_a);
+	return (0);
+}
+
+/* TESTING INSTRUCTIONS
+	
 	ft_putstr_fd("\n\n\nDone.\nNow the tests of instructions:\n\n", 1);
-	stack_b = ft_lstnew(NULL);
+	
 
 	// Swap first 2 in A 
 	ft_putstr_fd("sa:\n", 1);
@@ -179,6 +151,5 @@ int	main(int argc, char **argv)
 	pa(&stack_a, &stack_b);
 	pa(&stack_a, &stack_b);
 	see_stacks(stack_a, stack_b);
-	free_stack(stack_a);
-	return (0);
-}
+	
+	*/
