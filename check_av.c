@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 18:40:05 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/08 19:11:52 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/08 19:23:50 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,18 @@ static int	check_error(t_list *stack_a)
 	{
 		ptr2 = ptr->next;
 		if (!ft_strncmp((char *)ptr->content, "err", 3))
-			return (1);
+			return (0);
 		n = ft_atoi((const char *)ptr->content);
 		while (ptr2)
 		{
 			cmp = ft_atoi((const char *)ptr2->content);
-			ft_printf("n -->>  %d\ncmp -->> %d\n", n, cmp);
 			if (n == cmp)
-				return (1);
+				return (0);
 			ptr2 = ptr2->next;
 		}
 		ptr = ptr->next;
 	}
-	return (0);
+	return (1);
 }
 
 static int	split_case(t_list **stack_a, char *argv)
@@ -71,25 +70,19 @@ int	check_av(t_list **stack_a, char **argv)
 		j = 0;
 		if (ft_strchr(argv[i], ' '))
 			split_case(stack_a, argv[i]);
-		if (argv[i][j] == '-' || argv[i][j] == '+')
-			j++;
-		while (ft_isdigit(argv[i][j]))
-			j++;
-		if (argv[i][j] != '\0')
-		{
-			ft_putstr_fd("here??\n", 1);
-			return (0);
-		}
-			
-		if (!stack_a)
-			*stack_a = ft_lstnew(ft_itoa(ft_atoi(argv[i])));
 		else
-			ft_lstadd_back(stack_a, ft_lstnew(ft_itoa(ft_atoi(argv[i]))));
+		{
+			if (argv[i][j] == '-' || argv[i][j] == '+')
+				j++;
+			while (ft_isdigit(argv[i][j]))
+				j++;
+			if (argv[i][j] != '\0')
+				return (0);
+			if (!stack_a)
+				*stack_a = ft_lstnew(ft_itoa(ft_atoi(argv[i])));
+			else
+				ft_lstadd_back(stack_a, ft_lstnew(ft_itoa(ft_atoi(argv[i]))));
+		}
 	}
-	if (check_error(*stack_a))
-	{
-		ft_putstr_fd("or here??\n", 1);
-		return (0);
-	}
-	return (1);
+	return (check_error(*stack_a));
 }

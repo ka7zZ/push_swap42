@@ -107,7 +107,7 @@ static int	check_stop(t_list *stack)
 }
 
 //function to push elements from stack_a to stack_b with the digits number
-static int	push_elements(t_list **stack_a, t_list **stack_b, int check_digits)
+static int	push_elements(t_list **stack_a, t_list **stack_b, int check_digits, int *moves)
 {
 	t_list	*ptr;
 	int		size;
@@ -126,14 +126,21 @@ static int	push_elements(t_list **stack_a, t_list **stack_b, int check_digits)
 		ptr = ptr->next;
 	}
 	while (--i && size == check_digits)
+	{
+		*moves += 1;
 		ra(stack_a);
+	}
 	if (size == check_digits)
-		return (pb(stack_a, stack_b), 1);
+	{
+		pb(stack_a, stack_b);
+		*moves += 1;
+		return (1);
+	}
 	return (0);
 }
 
 // function to push to stack_a arranged elements from stack_b
-static void arrange_b(t_list **stack_a, t_list **head_b)
+static void arrange_b(t_list **stack_a, t_list **head_b, int *moves)
 {
 	int	first;
 	int second;
@@ -151,10 +158,12 @@ static void arrange_b(t_list **stack_a, t_list **head_b)
 			rrb(head_b);
 		else
 			rb(head_b);
+		*moves += 1;
 	}
 	else if (head_b && *head_b)
 	{
 		size = ft_lstsize(*head_b);
+		*moves += size;
 		while (size--)
 			pa(stack_a, head_b);
 	}
@@ -168,6 +177,7 @@ int main(int ac, char **av)
 	int		loop;
 	int		round;
 	int		check_digits;
+	int		moves;
 
 	if (ac < 2)
 		return (ft_putstr_fd("Error\n", 1), 0);
@@ -175,20 +185,22 @@ int main(int ac, char **av)
 	stack_b = NULL;
 	if (!check_av(&stack_a, av))
 		return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
-		
+	moves = 0;
+	round = 0;
 	see_stack(stack_a);
-	// loop = ft_lstsize(stack_a) / 2;
-	// while (loop--)
-	// 	pb(&stack_a, &stack_b);
-	// see_stacks(stack_a, stack_b);
 	check_digits = digits(&stack_a);
+	ft_printf("moves before while(check_digits)--->> %d\n", moves);
 	while (check_digits)
 	{
-		while (push_elements(&stack_a, &stack_b, check_digits));
+		round++;
+		while (push_elements(&stack_a, &stack_b, check_digits, &moves));
+		ft_printf("moves after while(push)[%d round] --->> %d\n", round, moves);
 		while (stack_b)
-			arrange_b(&stack_a, &stack_b);	
+			arrange_b(&stack_a, &stack_b, &moves);
+		ft_printf("moves after while(stack)[%d round] --->> %d\n", round, moves);
 		check_digits -= 1;
 	}
 	see_stack(stack_a);
+	ft_printf("stack size ---->> %d\nmoves end of main ----->> %d\n", ft_lstsize(stack_a), moves);
 	return (0);
 }
