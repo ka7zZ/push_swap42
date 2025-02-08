@@ -1,0 +1,20 @@
+3
+12
+1024
+888
+678
+660
+576
+788
+
+1phase: divide half in 2 separate stacks
+  stack_a                 stack_b
+    678                     888
+    660                     1024
+    576                     12
+    788                     33 
+if (1 < 2)
+    Swap
+else
+    rra
+

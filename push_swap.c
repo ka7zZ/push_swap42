@@ -59,23 +59,20 @@ static void	free_stack(t_list *stack)
 
 static void		sort_b(t_list **stack_b)
 {
-	t_list	*first;
-	t_list	*second;
-	t_list	*last;
+	t_list	*head;
+	int		a;
+	int		b;
+	int		c;
 
-	first = *stack_b;
-	if (ft_lstsize(first) == 2)
-	{
-		second = first->next;
-		if (ft_atoi(first->content) < ft_atoi(second->content))
-			sb(stack_b);
-	}
-	if (ft_lstsize(first) > 2)
-	{
-		second = first->next;
-		if ()
-	}
-	return (0);
+	if (!ft_lstsize(*stack_b) || ft_lstsize(*stack_b) == 1)
+		return ;
+	head = *stack_b;
+	a = ft_atoi((char *)head->content);
+	b = ft_atoi((char *)head->next->content);
+	c = ft_atoi((char *)ft_lstlast(head)->content);
+	if (a < b)
+		sb(stack_b);
+	if ()
 }
 
 static int	digits(t_list **stack_a)
@@ -135,7 +132,7 @@ int	main(int argc, char **argv)
 	if (argc < 2)
 		return (ft_putstr_fd("Error\n", 1), 0);
 	stack_a = NULL;
-	stack_b = ft_lstnew(NULL);
+	stack_b = NULL;
 	if (!check_av(&stack_a, argv))
 		return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
 	see_stack(stack_a);
