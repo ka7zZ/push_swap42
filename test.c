@@ -139,6 +139,22 @@ static int	push_elements(t_list **stack_a, t_list **stack_b, int check_digits, i
 	return (0);
 }
 
+// send arranged buckets to stack_a
+static void	ft_send_bucket(t_list **stack_a, t_list **stack_b, int *moves)
+{
+	t_list	*head_a;
+	t_list	*head_b;
+	int		first;
+	int		second;
+	int		last;
+
+	pa(stack_a, stack_b);
+	while (ft_atoi((*stack_a)->content) > ft_atoi((*stack_a)->next->content))
+	{
+		
+	}
+}
+
 // function to push to stack_a arranged elements from stack_b
 static void arrange_b(t_list **stack_a, t_list **head_b, int *moves)
 {
@@ -163,19 +179,28 @@ static void arrange_b(t_list **stack_a, t_list **head_b, int *moves)
 	else if (head_b && *head_b)
 	{
 		size = ft_lstsize(*head_b);
-		*moves += size;
 		while (size--)
-			pa(stack_a, head_b);
+			ft_send_bucket(stack_a, head_b, moves);
 	}
 }
 
+static void	arrangeby_digits(t_list **stack_a)
+{
+	t_list	*ptr;
+	int		max_digits;
+	int		i;
+
+	ptr = *stack_a;
+	max_digits = digits(stack_a);
+	i = 0;
+
+}
 
 int main(int ac, char **av)
 {
 	t_list  *stack_a;
 	t_list  *stack_b;
 	int		loop;
-	int		round;
 	int		check_digits;
 	int		moves;
 
@@ -186,20 +211,16 @@ int main(int ac, char **av)
 	if (!check_av(&stack_a, av))
 		return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
 	moves = 0;
-	round = 0;
 	see_stack(stack_a);
 	check_digits = digits(&stack_a);
-	ft_printf("moves before while(check_digits)--->> %d\n", moves);
 	while (check_digits)
 	{
-		round++;
 		while (push_elements(&stack_a, &stack_b, check_digits, &moves));
-		ft_printf("moves after while(push)[%d round] --->> %d\n", round, moves);
 		while (stack_b)
 			arrange_b(&stack_a, &stack_b, &moves);
-		ft_printf("moves after while(stack)[%d round] --->> %d\n", round, moves);
 		check_digits -= 1;
 	}
+
 	see_stack(stack_a);
 	ft_printf("stack size ---->> %d\nmoves end of main ----->> %d\n", ft_lstsize(stack_a), moves);
 	return (0);
