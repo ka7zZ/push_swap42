@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 18:46:55 by aghergut          #+#    #+#              #
-#    Updated: 2025/02/06 18:15:49 by aghergut         ###   ########.fr        #
+#    Updated: 2025/02/07 11:51:05 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ COMPILER = cc
 CFLAGS = -Wall -Werror -Wextra
 
 LIBFT = libft/
-MAKE_LIBFT = make -C $(LIBFT)
-FCLEAN_LIBFT = make fclean -C $(LIBFT)
+MAKE_LIBFT = @make -C $(LIBFT)
+FCLEAN_LIBFT = @make fclean -C $(LIBFT)
 FLAGS_LIBFT = -Llibft -lft
 INCLUDES = -Ilibft -I.
 

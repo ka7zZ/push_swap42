@@ -57,24 +57,32 @@ static void	free_stack(t_list *stack)
 	free(stack);
 }
 
-static void		push_and_sort(t_list **stack_a, t_list **stack_b, int check_digits)
+static void		sort_b(t_list **stack_b)
 {
-	t_list	*buf;
-	int		digits;
+	t_list	*first;
+	t_list	*second;
+	t_list	*last;
 
-	buf = *(stack_a)->next;
-	digits = ft_strlen(*(stack_a)->content);
-	if (ft_strchr(*(stack_a)->content, '-'))
-		digits--;
-	if (digits != check_digits)
-		ra(stack_a);
+	first = *stack_b;
+	if (ft_lstsize(first) == 2)
+	{
+		second = first->next;
+		if (ft_atoi(first->content) < ft_atoi(second->content))
+			sb(stack_b);
+	}
+	if (ft_lstsize(first) > 2)
+	{
+		second = first->next;
+		if ()
+	}
+	return (0);
 }
 
-static void	digits(t_list **stack_a, t_list **stack_b)
+static int	digits(t_list **stack_a)
 {
 	t_list 		*ptr;
-	size_t		digits;
-	size_t		check_digits;
+	int		digits;
+	int		check_digits;
 
 	ptr = *stack_a;
 	digits = 0;
@@ -88,7 +96,35 @@ static void	digits(t_list **stack_a, t_list **stack_b)
 			check_digits = digits;
 		ptr = ptr->next;
 	}
-	push_and_sort(stack_a, stack_b, check_digits);
+	return (check_digits);
+}
+
+static int	push_elemets(t_list **stack_a, t_list **stack_b, int check_digits)
+{
+	t_list	*ptr;
+	t_list	*head;
+	int		size;
+	int		i;
+
+	ptr = *stack_a;
+	i = 0;
+	while (ptr)
+	{
+		i++;
+		size = ft_strlen((char *)ptr->content);
+		if (ft_strchr((char *)ptr->content, '-'))
+			size--;
+		if (size == check_digits)
+			break;
+		ptr = ptr->next;
+	}
+	while (--i)
+		rra(stack_a);
+	head = *stack_a;
+	size = ft_strlen((char *)head->content);
+	if (size == check_digits)
+		return (pb(stack_a, stack_b), 1);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -105,7 +141,17 @@ int	main(int argc, char **argv)
 	see_stack(stack_a);
 	ft_putstr_fd("Checked successfully that all parameters are numbers!\n", 1);
 	ft_putstr_fd("Added successfully all the data to stack_a\n", 1);
-	digits(&stack_a, &stack_b);
+
+	/* ********************* OJOOOO  ********************************
+
+incerc sa pushui elementele cu cel mai mare numar de cifre din a in b in interiorul unei bucle while
+atat timp cat pushui cate unu, incerc sa le sortez direct prin sort_b;
+	*/
+	while (push_elemets(&stack_a, &stack_b, digits(&stack_a)))
+		sort_b(&stack_b);
+	/***************************************************************** 
+	*/
+	
 	see_stacks(stack_a, stack_b);
 	if (stack_b)
 		free_stack(stack_b);
