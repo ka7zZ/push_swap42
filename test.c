@@ -55,8 +55,9 @@ static void	free_stack(t_list *stack)
 		free(stack);
 		stack = ptr_a;
 	}
-	free(stack);
 }
+
+// binary get last
 
 // function to get the biggest digits numbers
 static int	digits(t_list **stack_a)
@@ -66,15 +67,17 @@ static int	digits(t_list **stack_a)
 	int check_digits;
 
 	ptr = *stack_a;
-	digits = 0;
 	check_digits = 0;
 	while (ptr)
 	{
-		digits = ft_strlen(ptr->content);
-		if (ft_strchr(ptr->content, '-'))
-			digits--;
-		if (digits > check_digits)
-			check_digits = digits;
+		digits = 0;
+		if (!ft_strchr((char *)ptr->content, '-'))
+		{	
+			if (ptr->content)
+				digits = ft_strlen(ptr->content);
+			if (digits > check_digits)
+				check_digits = digits;
+		}
 		ptr = ptr->next;
 	}
 	return (check_digits);
@@ -98,7 +101,7 @@ static int	check_stop(t_list *stack)
 		{
 			a = ft_atoi((char *)ptr->content);
 			b = ft_atoi((char *)buf->content);
-			if (a < b)
+			if (a > b)
 				check = 0;
 		}
 		ptr = buf;
@@ -106,39 +109,173 @@ static int	check_stop(t_list *stack)
 	return (check);
 }
 
-//function to push elements from stack_a to stack_b with the digits number
-static int	push_elements(t_list **stack_a, t_list **stack_b, int check_digits, int *moves)
+static int	find_digits(t_list *stack, int digits)
 {
 	t_list	*ptr;
 	int		size;
-	int		i;
+	int		check;
 
-	ptr = *stack_a;
-	i = 0;
+	check = 0;
+	size = 0;
+	ptr = stack;
 	while (ptr)
 	{
-		i++;
-		size = ft_strlen((char *)ptr->content);
-		if (ft_strchr((char *)ptr->content, '-'))
-			size--;
-		if (size == check_digits)
-			break;
+		if (!ft_strchr((char *)ptr->content, '-'))
+			size = ft_strlen((char *)ptr->content);
+		if (size && size >= digits)
+			check = 1;
 		ptr = ptr->next;
 	}
-	while (--i && size == check_digits)
+	return (check);
+}
+
+static void	arrange(t_list **stack_a, t_list **stack_b, char type, int *moves)
+{
+	t_list	*ptr;
+	int		first;
+	int		sec;
+	int		last;
+
+	if (type == 'a')
+		ptr = *stack_a;
+	if (type == 'b')
+		ptr = *stack_b;
+	first = ft_atoi((char *)ptr->content);
+	sec = ft_atoi((char *)ptr->next->content);
+	last = ft_atoi((char *)ft_lstlast(ptr)->content);
+	if (first > sec)
+		swap(stack_a, stack_b, type);
+	else if (first < sec && first < last && sec > last)
+		rev_rotate(stack_a, stack_b, type);
+	else
+		rotate(stack_a, stack_b, type);
+	*moves += 1;
+}
+
+//function to push elements from stack_a to stack_b with the digits number
+static int	push_b(t_list **stack_a, t_list **stack_b, int check_digits, int *moves)
+{
+	t_list	*buf;
+	int		size;
+	int		res;
+
+	res = 0;
+	size = 0;
+	while (find_digits(*stack_a, check_digits))
 	{
+		buf = *stack_a;
+		if (!ft_strchr((char *)buf->content, '-'))
+			size = ft_strlen((char *)buf->content);
+		if (size >= check_digits)
+		{
+			push(stack_a, stack_b, 'b');
+			res = 1;
+		}	
+		else
+			rotate(stack_a, stack_b, 'a');
 		*moves += 1;
-		ra(stack_a);
 	}
-	if (size == check_digits)
+	return (res);
+}
+
+static void	push_a(t_list **a, t_list **b, int *moves)
+{
+	t_list *ptr;
+
+	while (*b)
 	{
-		pb(stack_a, stack_b);
-		*moves += 1;
-		return (1);
+		ptr = (*b)->next;
+		push(a, b, 'a');
+		rotate(a, b, 'a');
+		*moves += 2;
+		*b = ptr;
 	}
+}
+
+int main(int ac, char **av)
+{
+	t_list  *stack_a;
+	t_list  *stack_b;
+	int		check_digits;
+	int		bz;
+	int		moves;
+
+	if (ac < 2)
+		return (ft_putstr_fd("Error\n", 1), 0);
+	stack_a = NULL;
+	stack_b = NULL;
+	if (!check_av(&stack_a, av))
+		return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
+	check_digits = digits(&stack_a);
+	bz = check_digits / 2;
+	moves = 0;
+	while (check_digits > bz)
+	{
+		while (push_b(&stack_a, &stack_b, check_digits, &moves));
+		check_digits--;
+	}
+	while (!check_stop(stack_a))
+		arrange(&stack_a, &stack_b, 'a', &moves);		
+	while (!check_stop(stack_b))
+		arrange(&stack_a, &stack_b, 'b', &moves);
+	push_a(&stack_a, &stack_b, &moves);
+	see_stack(stack_a);
+	ft_printf("moves -->> %d\n", moves);
 	return (0);
 }
 
+/* divide stack
+static void	divide_stack(t_list **stack_a, t_list **stack_b)
+{
+	int	biggest;
+	int	size;
+
+	biggest = digits(stack_a)
+	if (*stack_a)
+		size = ft_lstsize(*stack_a);
+	while (*stack_a && (*stack_a)->next && ft_lstsize(*stack_a) != size / 2)
+	{
+		ptr = (*stack_a)->next;
+		first_a = ft_atoi((char *)(*stack_a)->content);
+		second_a = ft_atoi((char *)(*stack_a)->next->content);
+		if (first_a > second_a)
+			pb(stack_a, stack_b);
+		else
+			ra(stack_a);
+		*stack_a = ptr;
+	}
+	while (!check_stop(*stack_a, 'a'))
+		arrange(stack_a, 'a');
+	while(!check_stop(*stack_b, 'b'))
+		arrange(stack_b, 'b');
+}
+*/
+
+/* ex arrange
+// function to push to stack_a arranged elements from stack_b
+static void arrange(t_list **stack_a, t_list **stack_b)
+{
+	int	first;
+	int second;
+	int	last;
+	int	size;
+
+	if (*stack_b && (*stack_b)->next && !check_stop(*stack_b))
+	{
+		first = ft_atoi((char *)(*stack_b)->content);
+		second = ft_atoi((char *)(*stack_b)->next->content);
+		last = ft_atoi((char *)ft_lstlast(*stack_b)->content);
+		if (first < second)
+			sb(stack_b);
+		else if (first > second && first > last && second < last )
+			rrb(stack_b);
+		else
+			rb(stack_b);
+	}
+}
+*/
+
+/* send_bucket intent
 // send arranged buckets to stack_a
 static void	ft_send_bucket(t_list **stack_a, t_list **stack_b, int *moves)
 {
@@ -154,36 +291,9 @@ static void	ft_send_bucket(t_list **stack_a, t_list **stack_b, int *moves)
 		
 	}
 }
+*/
 
-// function to push to stack_a arranged elements from stack_b
-static void arrange_b(t_list **stack_a, t_list **head_b, int *moves)
-{
-	int	first;
-	int second;
-	int	last;
-	int	size;
-
-	if (head_b && *head_b && !check_stop(*head_b))
-	{
-		first = ft_atoi((char *)(*head_b)->content);
-		second = ft_atoi((char *)(*head_b)->next->content);
-		last = ft_atoi((char *)ft_lstlast(*head_b)->content);
-		if (first < second)
-			sb(head_b);
-		else if (first > second && first > last && second < last )
-			rrb(head_b);
-		else
-			rb(head_b);
-		*moves += 1;
-	}
-	else if (head_b && *head_b)
-	{
-		size = ft_lstsize(*head_b);
-		while (size--)
-			ft_send_bucket(stack_a, head_b, moves);
-	}
-}
-
+/* arrangeby_digit intent
 static void	arrangeby_digits(t_list **stack_a)
 {
 	t_list	*ptr;
@@ -195,33 +305,58 @@ static void	arrangeby_digits(t_list **stack_a)
 	i = 0;
 
 }
+*/
 
-int main(int ac, char **av)
-{
-	t_list  *stack_a;
-	t_list  *stack_b;
-	int		loop;
-	int		check_digits;
-	int		moves;
+/*ideas for optimizing code
 
-	if (ac < 2)
-		return (ft_putstr_fd("Error\n", 1), 0);
-	stack_a = NULL;
-	stack_b = NULL;
-	if (!check_av(&stack_a, av))
-		return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
-	moves = 0;
-	see_stack(stack_a);
-	check_digits = digits(&stack_a);
-	while (check_digits)
-	{
-		while (push_elements(&stack_a, &stack_b, check_digits, &moves));
-		while (stack_b)
-			arrange_b(&stack_a, &stack_b, &moves);
-		check_digits -= 1;
-	}
+using an index for rev_rotate or rotate: if its close to the first half, rotate
+										 else rev_rotate;
+using integer functions
+using median pivot sorting
 
-	see_stack(stack_a);
-	ft_printf("stack size ---->> %d\nmoves end of main ----->> %d\n", ft_lstsize(stack_a), moves);
-	return (0);
-}
+as much as I want, i have to change the structure for a int, index and what do I need more. the one from the libft isn't enough;
+
+    Inefficient push_b logic
+        The function scans stack_a for elements based on their string length. This is not an effective sorting criterion and likely leads to unnecessary rotations.
+        Optimization: Use Radix Sort or a Median Pivot Sorting strategy instead of relying on string length.
+
+    Unnecessary Rotations in arrange
+        The arrange function sometimes rotates when it isn't strictly needed.
+        Optimization: Implement smarter pivot selection to reduce rotations.
+
+    Inefficient push_a
+        push_a does a push followed by a rotate for every element, leading to an unnecessary extra move.
+        Optimization: Use simpler push logic and avoid rotating unless necessary.
+
+    General Sorting Strategy
+        Currently, push_b works in a brute-force manner, pushing values based on digits rather than sorting efficiently.
+        Optimization: Implement a better chunking method, such as:
+            Radix Sort (binary-based, used in push_swap optimizations).
+            Quick Sort-inspired approach (push numbers above/below a median).
+            Group-based chunk sorting (splitting the list into smaller sorted subsections).
+
+Proposed Optimized Approach
+
+    Use Radix Sort Instead of Current Push Mechanism
+        Instead of checking digit length, sort numbers using bitwise sorting (Radix Sort).
+        This allows moving elements in a structured way, reducing unnecessary operations.
+
+    Use a Smarter Pivot Selection (Median)
+        Instead of a naive approach to moving elements to stack_b, find the median of stack_a and push elements smaller than the median first.
+
+    Improve Push & Rotation Strategy
+        Instead of rotating on every push, keep a window of sorted elements.
+        Push elements back in a more controlled way.
+
+How to Implement These Changes?
+
+    Modify push_b to use a more efficient sorting method
+    Reduce unnecessary rotations in arrange
+    Optimize push_a to avoid redundant moves
+    Change the sorting approach from digit-based to value-based
+
+Would you like me to rewrite the relevant functions with these optimizations?
+
+to loearn more about algorithms and developing solutions!!!!
+
+*/

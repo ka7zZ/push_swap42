@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 18:40:05 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/08 19:23:50 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:49:08 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	split_case(t_list **stack_a, char *argv)
 	char	**split_case;
 	char	**temp;
 
-	split_case = ft_split(argv, ' ');
+	split_case = ft_split(argv, ',');
 	temp = split_case;
 	while (*split_case)
 	{
@@ -68,7 +68,7 @@ int	check_av(t_list **stack_a, char **argv)
 	while (argv[++i])
 	{
 		j = 0;
-		if (ft_strchr(argv[i], ' '))
+		if (ft_strchr(argv[i], ','))
 			split_case(stack_a, argv[i]);
 		else
 		{

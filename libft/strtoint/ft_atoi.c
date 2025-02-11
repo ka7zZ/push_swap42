@@ -6,33 +6,37 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:43:16 by aghergut          #+#    #+#             */
-/*   Updated: 2024/10/15 17:38:19 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:31:44 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_atoi(const char *str)
+# include "strtoint.h"
+
+long	ft_atoi(const char *str)
 {
-	int	number;
-	int	kind;
+	long	number;
+	int		sign;
 
 	number = 0;
-	kind = 0;
-	while ((*str >= 9 && *str <= 13) || *str == 32)
+	sign = 1;
+	while ((*str >= 9 && *str <= 13) || *str == 32) // Skip whitespace
 		str++;
-	if (*str == '-')
+	if (*str == '-') // Handle negative sign
 	{
-		kind = 1;
+		sign = -1;
 		str++;
 	}
-	else if (*str == '+')
+	else if (*str == '+') // Skip positive sign
 		str++;
 	while (*str >= '0' && *str <= '9')
 	{
-		number *= 10;
-		number += *str - 48;
+		if (number > (LONG_MAX / 10) || (number == (LONG_MAX / 10) && (*str - '0') > (LONG_MAX % 10)))
+		{
+			// Overflow detection
+			return (sign == 1 ? LONG_MAX : LONG_MIN);
+		}
+		number = number * 10 + (*str - '0');
 		str++;
 	}
-	if (kind % 2 == 1)
-		return (-number);
-	return (number);
+	return (number * sign);
 }
