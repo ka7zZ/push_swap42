@@ -60,27 +60,17 @@ static void	free_stack(t_list *stack)
 // binary get last
 
 // function to get the biggest digits numbers
-static int	digits(t_list **stack_a)
+static int	n_digits(long num)
 {
-	t_list 		*ptr;
 	int		digits;
-	int check_digits;
 
-	ptr = *stack_a;
-	check_digits = 0;
-	while (ptr)
+	digits = 0;
+	while (num_check > 0)
 	{
-		digits = 0;
-		if (!ft_strchr((char *)ptr->content, '-'))
-		{	
-			if (ptr->content)
-				digits = ft_strlen(ptr->content);
-			if (digits > check_digits)
-				check_digits = digits;
-		}
-		ptr = ptr->next;
+		digits += 1;
+		num_check /= 10;
 	}
-	return (check_digits);
+	return (digits);
 }
 
 // function to stop applying the algorythm to the stack_b
@@ -88,8 +78,8 @@ static int	check_stop(t_list *stack)
 {
 	t_list	*ptr;
 	t_list	*buf;
-	int		a;
-	int		b;
+	long	a;
+	long	b;
 	int		check;
 
 	check = 1;
@@ -109,9 +99,10 @@ static int	check_stop(t_list *stack)
 	return (check);
 }
 
-static int	find_digits(t_list *stack, int digits)
+static int	check_digits(t_list *stack, int digits)
 {
 	t_list	*ptr;
+	long	num;
 	int		size;
 	int		check;
 
@@ -120,36 +111,65 @@ static int	find_digits(t_list *stack, int digits)
 	ptr = stack;
 	while (ptr)
 	{
-		if (!ft_strchr((char *)ptr->content, '-'))
-			size = ft_strlen((char *)ptr->content);
-		if (size && size >= digits)
+		num = ft_atoi((char *)ptr->content);
+		if (num >= 0)
+			size = n_digits(num);
+		if (size && size == digits)
 			check = 1;
 		ptr = ptr->next;
 	}
 	return (check);
 }
 
-static void	arrange(t_list **stack_a, t_list **stack_b, char type, int *moves)
+static void	arrange_stack(t_list **stack_a, t_list **stack_b, int *moves)
 {
 	t_list	*ptr;
-	int		first;
-	int		sec;
-	int		last;
+	long	first;
+	long	sec;
+	long	last;
 
-	if (type == 'a')
-		ptr = *stack_a;
-	if (type == 'b')
-		ptr = *stack_b;
+	ptr = *stack_b;
 	first = ft_atoi((char *)ptr->content);
 	sec = ft_atoi((char *)ptr->next->content);
 	last = ft_atoi((char *)ft_lstlast(ptr)->content);
 	if (first > sec)
-		swap(stack_a, stack_b, type);
-	else if (first < sec && first < last && sec > last)
-		rev_rotate(stack_a, stack_b, type);
+		swap(stack_a, stack_b);
+	else if ( first < last && sec > last)
+		rev_rotate(stack_a, stack_b);
 	else
-		rotate(stack_a, stack_b, type);
+		rotate(stack_a, stack_b);
 	*moves += 1;
+}
+
+// optimizing stack_a for pushing to B when finding the digits number, reduces 50k moves;
+static void	optimize_search(t_list **stack_a, t_list **stack_b, int digits, int *moves)
+{
+	t_list	*ptr;
+	int		idx;
+	int		size;
+	int		len;
+
+	ptr = *stack_a;
+	size = ft_lstsize(ptr);
+	idx = 0;
+	while (ptr)
+	{
+		len = ft_strlen((char *)ptr->content);
+		if (ft_atoi((char *)ptr->content) > 0 && len == digits)
+			break;
+		idx++;
+		ptr = ptr->next;
+	}
+	if (idx <= size / 2)
+	{
+		*moves = idx;
+		while (idx--)
+			rotate(stack_a, stack_b, 'a');
+		return ;
+	}
+	*moves = size - idx;
+	while (idx++ < size)
+		rev_rotate(stack_a, stack_b, 'a');
 }
 
 //function to push elements from stack_a to stack_b with the digits number
@@ -163,33 +183,34 @@ static int	push_b(t_list **stack_a, t_list **stack_b, int check_digits, int *mov
 	size = 0;
 	while (find_digits(*stack_a, check_digits))
 	{
-		buf = *stack_a;
-		if (!ft_strchr((char *)buf->content, '-'))
-			size = ft_strlen((char *)buf->content);
-		if (size >= check_digits)
-		{
-			push(stack_a, stack_b, 'b');
-			res = 1;
-		}	
-		else
-			rotate(stack_a, stack_b, 'a');
+		optimize_search(stack_a, stack_b, check_digits, moves);
+		push(stack_a, stack_b, 'b');
 		*moves += 1;
 	}
 	return (res);
 }
 
-static void	push_a(t_list **a, t_list **b, int *moves)
+static void arrange_bydigit(t_list **stack_a, t_list **stack_a, int check_digits, int *moves)
+{
+	while (ft_strlen((char *)(*stack_a)->content) )
+}
+static int	push_a(t_list **a, t_list **b, int check_digits, int *moves)
 {
 	t_list *ptr;
-
+	int		check;
+	
+	check = 0;
 	while (*b)
 	{
+		check = 1;
 		ptr = (*b)->next;
 		push(a, b, 'a');
-		rotate(a, b, 'a');
+		if (!check_digits)
+			rotate(a, b, 'a');
 		*moves += 2;
 		*b = ptr;
 	}
+	return (check);
 }
 
 int main(int ac, char **av)
@@ -206,19 +227,24 @@ int main(int ac, char **av)
 	stack_b = NULL;
 	if (!check_av(&stack_a, av))
 		return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
-	check_digits = digits(&stack_a);
-	bz = check_digits / 2;
+	bz = ft_lstsize(stack_a);
 	moves = 0;
-	while (check_digits > bz)
+	if (bz > 20)
 	{
-		while (push_b(&stack_a, &stack_b, check_digits, &moves));
-		check_digits--;
+		check_digits = digits(&stack_a);
+		while (check_digits)
+		{
+			while (push_b(&stack_a, &stack_b, check_digits, &moves));
+			check_digits--;
+		}
+		while (!check_stop(stack_a))
+			arrange(&stack_a, &stack_b, 'a', &moves);		
+		while (!check_stop(stack_b))
+			arrange(&stack_a, &stack_b, 'b', &moves);
+		push_a(&stack_a, &stack_b, check_digits, &moves);
 	}
 	while (!check_stop(stack_a))
-		arrange(&stack_a, &stack_b, 'a', &moves);		
-	while (!check_stop(stack_b))
-		arrange(&stack_a, &stack_b, 'b', &moves);
-	push_a(&stack_a, &stack_b, &moves);
+		arrange(&stack_a, &stack_b, 'a', &moves);
 	see_stack(stack_a);
 	ft_printf("moves -->> %d\n", moves);
 	return (0);
@@ -309,51 +335,49 @@ static void	arrangeby_digits(t_list **stack_a)
 
 /*ideas for optimizing code
 
-using an index for rev_rotate or rotate: if its close to the first half, rotate
-										 else rev_rotate;
 using integer functions
 using median pivot sorting
 
 as much as I want, i have to change the structure for a int, index and what do I need more. the one from the libft isn't enough;
 
-    Inefficient push_b logic
-        The function scans stack_a for elements based on their string length. This is not an effective sorting criterion and likely leads to unnecessary rotations.
-        Optimization: Use Radix Sort or a Median Pivot Sorting strategy instead of relying on string length.
+	Inefficient push_b logic
+		The function scans stack_a for elements based on their string length. This is not an effective sorting criterion and likely leads to unnecessary rotations.
+		Optimization: Use Radix Sort or a Median Pivot Sorting strategy instead of relying on string length.
 
-    Unnecessary Rotations in arrange
-        The arrange function sometimes rotates when it isn't strictly needed.
-        Optimization: Implement smarter pivot selection to reduce rotations.
+	Unnecessary Rotations in arrange
+		The arrange function sometimes rotates when it isn't strictly needed.
+		Optimization: Implement smarter pivot selection to reduce rotations.
 
-    Inefficient push_a
-        push_a does a push followed by a rotate for every element, leading to an unnecessary extra move.
-        Optimization: Use simpler push logic and avoid rotating unless necessary.
+	Inefficient push_a
+		push_a does a push followed by a rotate for every element, leading to an unnecessary extra move.
+		Optimization: Use simpler push logic and avoid rotating unless necessary.
 
-    General Sorting Strategy
-        Currently, push_b works in a brute-force manner, pushing values based on digits rather than sorting efficiently.
-        Optimization: Implement a better chunking method, such as:
-            Radix Sort (binary-based, used in push_swap optimizations).
-            Quick Sort-inspired approach (push numbers above/below a median).
-            Group-based chunk sorting (splitting the list into smaller sorted subsections).
+	General Sorting Strategy
+		Currently, push_b works in a brute-force manner, pushing values based on digits rather than sorting efficiently.
+		Optimization: Implement a better chunking method, such as:
+			Radix Sort (binary-based, used in push_swap optimizations).
+			Quick Sort-inspired approach (push numbers above/below a median).
+			Group-based chunk sorting (splitting the list into smaller sorted subsections).
 
 Proposed Optimized Approach
 
-    Use Radix Sort Instead of Current Push Mechanism
-        Instead of checking digit length, sort numbers using bitwise sorting (Radix Sort).
-        This allows moving elements in a structured way, reducing unnecessary operations.
+	Use Radix Sort Instead of Current Push Mechanism
+		Instead of checking digit length, sort numbers using bitwise sorting (Radix Sort).
+		This allows moving elements in a structured way, reducing unnecessary operations.
 
-    Use a Smarter Pivot Selection (Median)
-        Instead of a naive approach to moving elements to stack_b, find the median of stack_a and push elements smaller than the median first.
+	Use a Smarter Pivot Selection (Median)
+		Instead of a naive approach to moving elements to stack_b, find the median of stack_a and push elements smaller than the median first.
 
-    Improve Push & Rotation Strategy
-        Instead of rotating on every push, keep a window of sorted elements.
-        Push elements back in a more controlled way.
+	Improve Push & Rotation Strategy
+		Instead of rotating on every push, keep a window of sorted elements.
+		Push elements back in a more controlled way.
 
 How to Implement These Changes?
 
-    Modify push_b to use a more efficient sorting method
-    Reduce unnecessary rotations in arrange
-    Optimize push_a to avoid redundant moves
-    Change the sorting approach from digit-based to value-based
+	Modify push_b to use a more efficient sorting method
+	Reduce unnecessary rotations in arrange
+	Optimize push_a to avoid redundant moves
+	Change the sorting approach from digit-based to value-based
 
 Would you like me to rewrite the relevant functions with these optimizations?
 

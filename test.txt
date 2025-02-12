@@ -77,3 +77,43 @@ THEORY ALGORITHMS:
 ->
 ->
 ->
+
+size = 15;
+idx = 0;
+content = 101389
+
+while (110212 != 101389)
+      idx++
+      next
+
+
+101389
+100491
+100390
+99511
+99453
+99405
+12344
+110212  1   
+109102  2
+108880  3
+107442  4
+107020  5  
+104669  6
+104151  7
+101781  8            idx = 8;
+
+
+
+
+
+
+
+
+15 / 2 
+k = base;
+d - digits
+n - numbers total
+counting sort - O(n+k)
+radix sort    - O(d(n+k))
+10 * 500
