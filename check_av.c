@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 18:40:05 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/12 12:44:14 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:22:30 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,17 @@ static int	split_case(t_list **stack_a, char *argv)
 {
 	char	**split_case;
 	char	**temp;
+	char	*buf;
 
 	split_case = ft_split(argv, ' ');
 	temp = split_case;
 	while (*split_case)
 	{
-		if (ft_atoi(*split_case) || ft_isdigit((*split_case)[0]))
-			ft_lstadd_back(stack_a, ft_lstnew(ft_itoa(ft_atoi(*split_case))));
+		buf = ft_itoa(ft_atoi(*split_case));
+		if (buf != NULL)
+			ft_lstadd_back(stack_a, ft_lstnew(buf));
 		else
-			ft_lstadd_back(stack_a, ft_lstnew(ft_strdup("err")));
+			ft_lstadd_back(stack_a, ft_lstnew(ft_strdup(NULL)));
 		free(*split_case);
 		split_case++;
 	}
@@ -59,29 +61,24 @@ static int	split_case(t_list **stack_a, char *argv)
 	return (1);
 }
 
-int	check_av(t_list **stack_a, char **argv)
+int	check_av(t_stack **stack_a, char **argv)
 {
+	char	*buf;
+	int		check_arg;
 	int		i;
-	int		j;
-
+	
 	i = 0;
+	check_arg = 0;
 	while (argv[++i])
 	{
-		j = 0;
-		if (ft_strchr(argv[i], ' '))
+		if (i == 1 && ft_strchr(argv[i], ' '))
 			split_case(stack_a, argv[i]);
+		else if (i > 1 && ft_strchr(argv[i], ' '))
+			return (0);
 		else
 		{
-			if (argv[i][j] == '-' || argv[i][j] == '+')
-				j++;
-			while (ft_isdigit(argv[i][j]))
-				j++;
-			if (argv[i][j] != '\0')
-				return (0);
-			if (!stack_a)
-				*stack_a = ft_lstnew(ft_itoa(ft_atoi(argv[i])));
-			else
-				ft_lstadd_back(stack_a, ft_lstnew(ft_itoa(ft_atoi(argv[i]))));
+			buf = ft_itoa(ft_atoi(argv[i]));
+			ft_lstadd_back(stack_a, ft_lstnew(buf));
 		}
 	}
 	return (check_error(*stack_a));

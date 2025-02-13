@@ -117,3 +117,46 @@ n - numbers total
 counting sort - O(n+k)
 radix sort    - O(d(n+k))
 10 * 500
+t_list->content = stacka
+
+
+
+
+funcion search biggest number (t_list head)
+{
+    t_list ptrlist;
+    sort   ptrsort;
+    int        check_biggest;
+    static     idx;
+
+    ptrlist = head;
+    check_biggest = 0;
+    while (ptrlist)
+        ptrsort = ptrlist->content;
+        if (ptrsort->number > check_biggest)
+            n = stackptr->n
+        stackptr = stackptr->next
+
+struct sort {
+    int number;
+    int idx;
+}   t_sort;
+
+t_sort *head; (8)
+t_sort *ptr = head; (8)
+t_sort *buffer; (10)
+int idx = ptr->idx
+
+while (ptr)
+
+    buffer = ptr->next
+    if head > buffer
+        buffe->idx = 1;
+        head->idx = 0;
+        
+    ptr = buffer
+
+
+
+
+}

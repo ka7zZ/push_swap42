@@ -110,18 +110,31 @@ static int	check_stop(t_list *stack)
 	return (check);
 }
 
+static void	printing_bits(int a)
+{
+	int	bits;
+
+	bits = sizeof(a) * 8;
+	while (bits--)
+	{
+		if (a & (1 << bits))
+			ft_putchar_fd('1', 1);
+		else
+			ft_putchar_fd('0', 1);
+	}
+}
 
 int	main(int ac, char **av)
 {
 	t_list	*stack1;
 	int		moves;
 	int		i;
+	int		n;
 
 	stack1 = NULL;
 	i = 0;
 	while (av[++i])
 	{
-		ft_printf("av -->> %s\n", av[i]);
 		if (!stack1)
 			stack1 = ft_lstnew(ft_itoa(ft_atoi(av[i])));
 		else
@@ -129,8 +142,14 @@ int	main(int ac, char **av)
 	}
 	moves = 0;
 	see_stack(stack1);
-	while (!check_stop(stack1))
-		arrange_stack(&stack1, &moves);
-	see_stack(stack1);
+	while (stack1)
+	{
+		n = ft_atoi((char *)stack1->content);
+		ft_printf("Number: \t%d\n", n);
+		printing_bits(n);
+		ft_putstr_fd("\n\n", 1);
+		stack1 = stack1->next;
+	}
+	//see_stack(stack1);
 	return (0);
 }

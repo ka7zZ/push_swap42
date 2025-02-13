@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:43:16 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/12 18:04:37 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:50:37 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ long	ft_atoi(const char *str)
 }
 */
 
-int	ft_atoi(const char *str)
+long	ft_atoi(const char *str)
 {
-	int	number;
-	int	kind;
+	long	number;
+	int		kind;
 
 	number = 0;
 	kind = 0;
@@ -62,6 +62,8 @@ int	ft_atoi(const char *str)
 	{
 		number *= 10;
 		number += *str - 48;
+		if (number < INT_MIN || number > INT_MAX)
+			return(LONG_MAX);
 		str++;
 	}
 	if (kind % 2 == 1)

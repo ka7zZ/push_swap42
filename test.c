@@ -59,20 +59,128 @@ static void	free_stack(t_list *stack)
 
 // binary get last
 
-// function to get the biggest digits numbers
-static int	n_digits(long num)
+// function to get number of digits
+static int	get_digits(long num)
 {
 	int		digits;
 
 	digits = 0;
-	while (num_check > 0)
+	while (num > 0)
 	{
 		digits += 1;
-		num_check /= 10;
+		num /= 10;
 	}
 	return (digits);
 }
 
+// fct to give max digit number
+static int	max_digits(t_list **stack_a)
+{
+	t_list 		*ptr;
+	int		digits;
+	int		check_digits;
+
+	ptr = *stack_a;
+	digits = 0;
+	check_digits = 0;
+	while (ptr)
+	{
+		digits = get_digits(ft_atoi((char *)ptr->content));
+		if (digits > check_digits)
+			check_digits = digits;
+		ptr = ptr->next;
+	}
+	return (check_digits);
+}
+
+static int push(t_list **stack_a, t_list **stack_b, int digit, int *moves)
+{
+
+}
+
+/*
+- arrange stack by the positive digits and negative digits
+pseudocode 1: 
+
+positive numbers arrange:
+max_d = max_digit;
+while (max_d--)
+	push to stackb numbers of max_d
+	arrange and push to the end of stacka
+
+same story for the negative but with min_d digit numbers;
+
+
+ex:
+stack a stack_b
+	
+45		10 -> rra rra rra rra rra pb if n == 1 -> pa
+34		21 -> rra pb if n == 1 -> pa
+67	    32 -> rra pb if n == 1 -> pa
+87	68  43 -> rra pb if n == 1 -> pa
+58	43	34 -> rra ra ra ra pb if n == 1 -> pa 
+43  32  45 -> ra pb		|if lstsize(stackb) <= 3 -->>> apply 3 case sort
+32  21  5 -> ra ra pb   |else if <= 5 --->> apply 5 case sort
+21  10  				|else if apply big sort
+10  99     				| in this case only sb pa pa
+99  46  46 -> ra pb n == 1 -> pa
+46  5	67 -> cost pb (5 movements): ra ra ra ra ra pb |apply 3 case sort| sa pb pb 
+5   45  87 -> cost pb (6 movements): pb
+9   34	68 -> ra ra pb if n == 1 -> pa
+	87    9 -> rra rra 
+	67
+	
+	174 moves
+notes = check cost -->> check how many movevs it would take to bring them into the push mode
+
+pseudocode 2:
+
+put negative into stack b
+let positive into stack a
+arrange stack_a
+arrange_stack_b from the greatest numbers to the smallest
+push stack b into stack a
+
+*/
+
+typedef struct test
+{
+	int	number;
+	int	index;
+}	t_test;
+
+static void init(t_list *head)
+{
+	t_list *ptr;
+	t_test	*ptr_content;
+
+	ptr = head;
+	while (ptr)
+	{
+		ptr_content = ptr->content;
+		ptr_content->index = 0;
+		ptr = ptr->next;	
+	}
+}
+static void	set_index(t_list *stack_a, int length)
+{
+	t_list	*ptr;
+	t_list	*to_compare;
+
+	int		i = 0;
+
+	i = 1;
+	while (length--)
+	{
+		ptr = stack_a;
+		while (ptr)
+		{
+			to_compare = ptr->next;
+			git 
+			ptr = ptr->next;	
+		}
+	}
+}
 // function to stop applying the algorythm to the stack_b
 static int	check_stop(t_list *stack)
 {
@@ -113,7 +221,7 @@ static int	check_digits(t_list *stack, int digits)
 	{
 		num = ft_atoi((char *)ptr->content);
 		if (num >= 0)
-			size = n_digits(num);
+			size = get_digits(num);
 		if (size && size == digits)
 			check = 1;
 		ptr = ptr->next;
@@ -121,23 +229,26 @@ static int	check_digits(t_list *stack, int digits)
 	return (check);
 }
 
-static void	arrange_stack(t_list **stack_a, t_list **stack_b, int *moves)
+static void	arrange_stack(t_list **stack_a, t_list **stack_b, char type, int *moves)
 {
 	t_list	*ptr;
 	long	first;
 	long	sec;
 	long	last;
 
-	ptr = *stack_b;
+	if (type == 'a')
+		ptr = *stack_a;
+	else
+		ptr = *stack_b;
 	first = ft_atoi((char *)ptr->content);
 	sec = ft_atoi((char *)ptr->next->content);
 	last = ft_atoi((char *)ft_lstlast(ptr)->content);
 	if (first > sec)
-		swap(stack_a, stack_b);
+		swap(stack_a, stack_b, 'a');
 	else if ( first < last && sec > last)
-		rev_rotate(stack_a, stack_b);
+		rev_rotate(stack_a, stack_b, 'a');
 	else
-		rotate(stack_a, stack_b);
+		rotate(stack_a, stack_b, 'a');
 	*moves += 1;
 }
 
@@ -172,6 +283,7 @@ static void	optimize_search(t_list **stack_a, t_list **stack_b, int digits, int 
 		rev_rotate(stack_a, stack_b, 'a');
 }
 
+/* push_b func 
 //function to push elements from stack_a to stack_b with the digits number
 static int	push_b(t_list **stack_a, t_list **stack_b, int check_digits, int *moves)
 {
@@ -189,11 +301,14 @@ static int	push_b(t_list **stack_a, t_list **stack_b, int check_digits, int *mov
 	}
 	return (res);
 }
+*/
 
-static void arrange_bydigit(t_list **stack_a, t_list **stack_a, int check_digits, int *moves)
-{
-	while (ft_strlen((char *)(*stack_a)->content) )
-}
+// static void arrange_bydigit(t_list **stack_a, t_list **stack_a, int check_digits, int *moves)
+// {
+// 	while (ft_strlen((char *)(*stack_a)->content) )
+// }
+
+
 static int	push_a(t_list **a, t_list **b, int check_digits, int *moves)
 {
 	t_list *ptr;
@@ -227,6 +342,8 @@ int main(int ac, char **av)
 	stack_b = NULL;
 	if (!check_av(&stack_a, av))
 		return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
+	
+	/* what were before
 	bz = ft_lstsize(stack_a);
 	moves = 0;
 	if (bz > 20)
@@ -247,8 +364,33 @@ int main(int ac, char **av)
 		arrange(&stack_a, &stack_b, 'a', &moves);
 	see_stack(stack_a);
 	ft_printf("moves -->> %d\n", moves);
+	*/
+	moves = 0;
+	while (!check_stop(stack_a))
+		arrange_stack(&stack_a, &stack_b, 'a', &moves);
+	ft_printf("moves -->> %d\n", moves);	
+	see_stack(stack_a);
 	return (0);
 }
+
+
+t_list
+{
+	number;
+	set_index;
+	*next;
+}
+
+(head)node1 = {8. 0};
+node2 = {10, 0};
+node1->next = node2;
+
+ptr_node1 = node1
+ptr_node1  = ptr_node_next;
+
+ptr_node1_next;
+node1 = node1->next
+
 
 /* divide stack
 static void	divide_stack(t_list **stack_a, t_list **stack_b)

@@ -1,5 +1,8 @@
 #include "push_swap.h"
 
+/*	INTENT WITH LIBFT LISTS FUNCTIONS
+
+
 static void	see_stacks(t_list *a, t_list *b)
 {
 	t_list	*stack_a;
@@ -96,6 +99,36 @@ static int	digits(t_list **stack_a)
 	return (check_digits);
 }
 
+static void	optimize_search(t_list **stack_a, t_list **stack_b, int digits, int *moves)
+{
+	t_list	*ptr;
+	int		idx;
+	int		size;
+	int		len;
+
+	ptr = *stack_a;
+	size = ft_lstsize(ptr);
+	idx = 0;
+	while (ptr)
+	{
+		len = ft_strlen((char *)ptr->content);
+		if (ft_atoi((char *)ptr->content) > 0 && len == digits)
+			break;
+		idx++;
+		ptr = ptr->next;
+	}
+	if (idx <= size / 2)
+	{
+		*moves = idx;
+		while (idx--)
+			rotate(stack_a, stack_b, 'a');
+		return ;
+	}
+	*moves = size - idx;
+	while (idx++ < size)
+		rev_rotate(stack_a, stack_b, 'a');
+}
+
 static int	push_elemets(t_list **stack_a, t_list **stack_b, int check_digits)
 {
 	t_list	*ptr;
@@ -124,6 +157,50 @@ static int	push_elemets(t_list **stack_a, t_list **stack_b, int check_digits)
 	return (0);
 }
 
+
+//TESTING INSTRUCTIONS
+	
+	// ft_putstr_fd("\n\n\nDone.\nNow the tests of instructions:\n\n", 1);
+	
+
+	// // Swap first 2 in A 
+	// ft_putstr_fd("sa:\n", 1);
+	// sa(&stack_a);
+	// see_stack(stack_a);
+	
+	// // Push to B
+	// ft_putstr_fd("----------\npb pb pb:\n", 1);
+	// pb(&stack_a, &stack_b);
+	// pb(&stack_a, &stack_b);
+	// pb(&stack_a, &stack_b);
+	// see_stacks(stack_a, stack_b);
+
+	// // Shift elements from stacks one position up (the first become the last)
+	// ft_putstr_fd("----------\nra / rb:\n", 1);
+	// rr(&stack_a, &stack_b);
+	// see_stacks(stack_a, stack_b);
+
+	// // Shift elements from stacks one position down (the last become the first)
+	// ft_putstr_fd("----------\nrra / rrb:\n", 1);
+	// rrr(&stack_a, &stack_b);
+	// see_stacks(stack_a, stack_b);
+
+	// //
+	// ft_putstr_fd("----------\nsa:\n", 1);
+	// sa(&stack_a);
+	// see_stacks(stack_a, stack_b);
+
+	// //
+	// ft_putstr_fd("----------\npa pa pa:\n", 1);
+	// pa(&stack_a, &stack_b);
+	// pa(&stack_a, &stack_b);
+	// pa(&stack_a, &stack_b);
+	// see_stacks(stack_a, stack_b);
+
+*/
+
+static void	
+
 int	main(int argc, char **argv)
 {
 	t_list	*stack_a;
@@ -139,60 +216,17 @@ int	main(int argc, char **argv)
 	ft_putstr_fd("Checked successfully that all parameters are numbers!\n", 1);
 	ft_putstr_fd("Added successfully all the data to stack_a\n", 1);
 
-	/* ********************* OJOOOO  ********************************
+	// ********************* OJOOOO  ********************************
+	// incerc sa pushui elementele cu cel mai mare numar de cifre din a in b in interiorul unei bucle while
+	// atat timp cat pushui cate unu, incerc sa le sortez direct prin sort_b;
+	//
+	//	while (push_elemets(&stack_a, &stack_b, digits(&stack_a)))
+	//		sort_b(&stack_b);
+	// ***************************************************************** 
 
-incerc sa pushui elementele cu cel mai mare numar de cifre din a in b in interiorul unei bucle while
-atat timp cat pushui cate unu, incerc sa le sortez direct prin sort_b;
-	*/
-	while (push_elemets(&stack_a, &stack_b, digits(&stack_a)))
-		sort_b(&stack_b);
-	/***************************************************************** 
-	*/
-	
 	see_stacks(stack_a, stack_b);
 	if (stack_b)
 		free_stack(stack_b);
 	free_stack(stack_a);
 	return (0);
 }
-
-/* TESTING INSTRUCTIONS
-	
-	ft_putstr_fd("\n\n\nDone.\nNow the tests of instructions:\n\n", 1);
-	
-
-	// Swap first 2 in A 
-	ft_putstr_fd("sa:\n", 1);
-	sa(&stack_a);
-	see_stack(stack_a);
-	
-	// Push to B
-	ft_putstr_fd("----------\npb pb pb:\n", 1);
-	pb(&stack_a, &stack_b);
-	pb(&stack_a, &stack_b);
-	pb(&stack_a, &stack_b);
-	see_stacks(stack_a, stack_b);
-
-	// Shift elements from stacks one position up (the first become the last)
-	ft_putstr_fd("----------\nra / rb:\n", 1);
-	rr(&stack_a, &stack_b);
-	see_stacks(stack_a, stack_b);
-
-	// Shift elements from stacks one position down (the last become the first)
-	ft_putstr_fd("----------\nrra / rrb:\n", 1);
-	rrr(&stack_a, &stack_b);
-	see_stacks(stack_a, stack_b);
-
-	//
-	ft_putstr_fd("----------\nsa:\n", 1);
-	sa(&stack_a);
-	see_stacks(stack_a, stack_b);
-
-	//
-	ft_putstr_fd("----------\npa pa pa:\n", 1);
-	pa(&stack_a, &stack_b);
-	pa(&stack_a, &stack_b);
-	pa(&stack_a, &stack_b);
-	see_stacks(stack_a, stack_b);
-	
-	*/
