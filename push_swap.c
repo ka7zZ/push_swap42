@@ -32,20 +32,6 @@ static void	see_stacks(t_list *a, t_list *b)
 	ft_printf("\na\tb\n");
 }
 
-static void	see_stack(t_list *stack)
-{
-	t_list *ptr;
-
-	ptr = stack;
-	while (ptr)
-	{
-		ft_printf("%s\n", ptr->content);
-		ptr = ptr->next;
-	}
-	ft_putstr_fd("-\n", 1);
-	ft_putstr_fd("a/b\n", 1);
-}
-
 static void	free_stack(t_list *stack)
 {
 	t_list	*ptr_a;
@@ -199,7 +185,80 @@ static int	push_elemets(t_list **stack_a, t_list **stack_b, int check_digits)
 
 */
 
-static void	
+static void	set_index(t_list *stack_a, int length)
+{
+	t_list	*ptr;
+	t_list	*compare;
+	t_list	*max;
+	t_body	*b_ptr;
+	t_body	*b_compare;
+	t_body	*b_max;
+	int		i;
+
+	i = 0;
+	while (length--)
+	{
+		
+		++i;
+		ptr = stack_a;
+		b_ptr = ptr->content;
+		while (b_ptr->idx)
+		{
+			ptr = ptr->next;
+			b_ptr = ptr->content;
+		}
+		if (!ptr)
+			break;
+		max = ptr;
+		while (ptr)
+		{
+			compare = ptr->next;
+			if (compare)
+			{
+				b_compare = compare->content;
+				if (b_compare->idx == 0 && b_ptr->idx == 0)
+				{
+					b_max = max->content;
+					if (b_ptr->number > b_compare->number && b_max->number > b_compare->number)
+						max = compare;
+				}
+			}
+			ptr = ptr->next;	
+		}
+		if (!b_max->idx)
+			b_max->idx = i;	
+	}
+}
+
+static void	see_stack(t_list *stack)
+{
+	t_list	*ptr;
+	t_body	*b;
+	
+	ptr = stack;
+	ft_putstr_fd("Stack_a:\n", 1);
+	while (ptr)
+	{
+		b = ptr->content;
+		ft_printf("%d\n", b->number);
+		ptr = ptr->next;
+	}
+}
+
+static void	see_idx(t_list *stack)
+{
+	t_list	*ptr;
+	t_body	*b;
+	
+	ptr = stack;
+	ft_putstr_fd("Stack_a:\n", 1);
+	while (ptr)
+	{
+		b = ptr->content;
+		ft_printf("%d - %d\n", b->number, b->idx);
+		ptr = ptr->next;
+	}
+}
 
 int	main(int argc, char **argv)
 {
@@ -211,11 +270,16 @@ int	main(int argc, char **argv)
 	stack_a = NULL;
 	stack_b = NULL;
 	if (!check_av(&stack_a, argv))
-		return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
-	see_stack(stack_a);
+		return (ft_lstclear(&stack_a, free), ft_putstr_fd("Error\n", 1), 0);
 	ft_putstr_fd("Checked successfully that all parameters are numbers!\n", 1);
+	see_stack(stack_a);
+	
 	ft_putstr_fd("Added successfully all the data to stack_a\n", 1);
+	ft_printf("size -->> %d\n", ft_lstsize(stack_a));
 
+	set_index(stack_a, ft_lstsize(stack_a));
+	ft_putstr_fd("after setting index: \n", 1);
+	see_idx(stack_a);
 	// ********************* OJOOOO  ********************************
 	// incerc sa pushui elementele cu cel mai mare numar de cifre din a in b in interiorul unei bucle while
 	// atat timp cat pushui cate unu, incerc sa le sortez direct prin sort_b;
@@ -224,9 +288,9 @@ int	main(int argc, char **argv)
 	//		sort_b(&stack_b);
 	// ***************************************************************** 
 
-	see_stacks(stack_a, stack_b);
-	if (stack_b)
-		free_stack(stack_b);
-	free_stack(stack_a);
+	// see_stacks(stack_a, stack_b);
+	// if (stack_b)
+	// 	free_stack(stack_b);
+	ft_lstclear(&stack_a, free);
 	return (0);
 }

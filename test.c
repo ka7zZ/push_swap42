@@ -162,25 +162,7 @@ static void init(t_list *head)
 		ptr = ptr->next;	
 	}
 }
-static void	set_index(t_list *stack_a, int length)
-{
-	t_list	*ptr;
-	t_list	*to_compare;
 
-	int		i = 0;
-
-	i = 1;
-	while (length--)
-	{
-		ptr = stack_a;
-		while (ptr)
-		{
-			to_compare = ptr->next;
-			git 
-			ptr = ptr->next;	
-		}
-	}
-}
 // function to stop applying the algorythm to the stack_b
 static int	check_stop(t_list *stack)
 {

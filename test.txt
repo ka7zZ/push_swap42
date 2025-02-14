@@ -103,8 +103,25 @@ while (110212 != 101389)
 104151  7
 101781  8            idx = 8;
 
+stack_a
+numbers:    31  15  45  -1  -30 100 17
+idx:        0   0   0   0   0   0   0
 
-
+i = 1;
+max = stack_a;
+while (length--)
+{
+    ptr = stack_a;
+    while(ptr_sa)
+    {
+        ptr_compare = ptr->next;
+        if (ptr_compare->number < max->number)
+            max = ptr_compare;
+            max->idx = i;
+        ptr_sa = ptr->next;
+    }
+    i++;
+}
 
 
 

@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:09:25 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/13 18:27:33 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/14 11:36:42 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 # include "libft/libft.h"
 # include <limits.h>
 
-
+typedef struct Body {
+	int number;
+	int idx;
+}	t_body;
 
 int		check_av(t_list **stack_a, char **argv);
 int		main(int argc, char **argv);
