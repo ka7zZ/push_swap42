@@ -61,6 +61,7 @@
     "*.sqlbook": "sql",
     "*.ndjson": "jsonl",
     "*.dbclient-js": "javascript",
-    "type_traits": "c"
+    "type_traits": "c",
+    "string_view": "c"
   }
 }

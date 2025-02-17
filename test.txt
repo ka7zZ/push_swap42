@@ -1,179 +1,45 @@
-3
-12
-1024
-888
-678
-660
-576
-788
-
-1phase: divide half in 2 separate stacks
-  stack_a                 stack_b
-    678                     888
-    660                     1024
-    576                     12
-    788                     33 
-if (1 < 2)
-    Swap
-else
-    rra
-
-
-THEORY ALGORITHMS:
-
-0 - 25 ideas
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-25 - 50 ideas
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-->
-
-size = 15;
-idx = 0;
-content = 101389
-
-while (110212 != 101389)
-      idx++
-      next
-
-
-101389
-100491
-100390
-99511
-99453
-99405
-12344
-110212  1   
-109102  2
-108880  3
-107442  4
-107020  5  
-104669  6
-104151  7
-101781  8            idx = 8;
-
-stack_a
-numbers:    31  15  45  -1  -30 100 17
-idx:        0   0   0   0   0   0   0
-
-i = 1;
-max = stack_a;
-while (length--)
-{
-    ptr = stack_a;
-    while(ptr_sa)
-    {
-        ptr_compare = ptr->next;
-        if (ptr_compare->number < max->number)
-            max = ptr_compare;
-            max->idx = i;
-        ptr_sa = ptr->next;
-    }
-    i++;
-}
-
-
-
-
-
-15 / 2 
-k = base;
-d - digits
-n - numbers total
-counting sort - O(n+k)
-radix sort    - O(d(n+k))
-10 * 500
-t_list->content = stacka
-
-
-
-
-funcion search biggest number (t_list head)
-{
-    t_list ptrlist;
-    sort   ptrsort;
-    int        check_biggest;
-    static     idx;
-
-    ptrlist = head;
-    check_biggest = 0;
-    while (ptrlist)
-        ptrsort = ptrlist->content;
-        if (ptrsort->number > check_biggest)
-            n = stackptr->n
-        stackptr = stackptr->next
-
-struct sort {
-    int number;
-    int idx;
-}   t_sort;
-
-t_sort *head; (8)
-t_sort *ptr = head; (8)
-t_sort *buffer; (10)
-int idx = ptr->idx
-
-while (ptr)
-
-    buffer = ptr->next
-    if head > buffer
-        buffe->idx = 1;
-        head->idx = 0;
-        
-    ptr = buffer
-
-
-
-
-}
+ra
+sa
+pb
+sa
+pb
+pa
+pa
+sa
+pb
+sa
+pb
+rra
+pa
+pa
+rra
+pb
+rra
+pb
+rra
+pa
+pa
+pb
+pb
+pa
+pa
+pb
+pb
+pa
+pa
+pb
+pb
+pa
+pa
+pb
+pb
+pa
+pa
+pb
+pb
+pa
+pa
+pb
+pb
+pa
+pa

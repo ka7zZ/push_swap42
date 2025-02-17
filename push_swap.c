@@ -1,3 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/15 10:20:09 by aghergut          #+#    #+#             */
+/*   Updated: 2025/02/17 19:00:10 by aghergut         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 #include "push_swap.h"
 
 /*	INTENT WITH LIBFT LISTS FUNCTIONS
@@ -185,62 +198,16 @@ static int	push_elemets(t_list **stack_a, t_list **stack_b, int check_digits)
 
 */
 
-static void	set_index(t_list *stack_a, int length)
-{
-	t_list	*ptr;
-	t_list	*compare;
-	t_list	*max;
-	t_body	*b_ptr;
-	t_body	*b_compare;
-	t_body	*b_max;
-	int		i;
-
-	i = 0;
-	while (length--)
-	{
-		
-		++i;
-		ptr = stack_a;
-		b_ptr = ptr->content;
-		while (b_ptr->idx)
-		{
-			ptr = ptr->next;
-			b_ptr = ptr->content;
-		}
-		if (!ptr)
-			break;
-		max = ptr;
-		while (ptr)
-		{
-			compare = ptr->next;
-			if (compare)
-			{
-				b_compare = compare->content;
-				if (b_compare->idx == 0 && b_ptr->idx == 0)
-				{
-					b_max = max->content;
-					if (b_ptr->number > b_compare->number && b_max->number > b_compare->number)
-						max = compare;
-				}
-			}
-			ptr = ptr->next;	
-		}
-		if (!b_max->idx)
-			b_max->idx = i;	
-	}
-}
-
 static void	see_stack(t_list *stack)
 {
 	t_list	*ptr;
 	t_body	*b;
 	
 	ptr = stack;
-	ft_putstr_fd("Stack_a:\n", 1);
 	while (ptr)
 	{
 		b = ptr->content;
-		ft_printf("%d\n", b->number);
+		ft_printf("%d\n", b->n);
 		ptr = ptr->next;
 	}
 }
@@ -255,42 +222,189 @@ static void	see_idx(t_list *stack)
 	while (ptr)
 	{
 		b = ptr->content;
-		ft_printf("%d - %d\n", b->number, b->idx);
+		ft_printf("%d - %d\n", b->n, b->i);
 		ptr = ptr->next;
 	}
+}
+
+static void	set_index(t_list *stack_a, int length, int idx)
+{
+	t_list	*ptr;
+	t_list	*buf;
+	t_body	*bcompare;
+	t_body	*bbuf;
+
+	while (length--)
+	{
+		ptr = stack_a;
+		while (ptr && ((t_body *)ptr->content)->i)
+			ptr = ptr->next;
+		buf = ptr;
+		if (buf)
+			bbuf = buf->content;
+		while (ptr->next)
+		{
+			bcompare = ptr->next->content;
+			if (!bcompare->i && bbuf->n > bcompare->n)
+			{
+				buf = ptr->next;
+				bbuf = buf->content;
+			}
+			ptr = ptr->next;	
+		}
+		bbuf->i = ++idx;	
+	}
+}
+
+static void	optimize_search(t_list **stack_a, t_list **stack_b, int bits)
+{
+	t_list	*ptr;
+	t_body	*body_ptr;
+	int		idx;
+	int		size;
+
+	ptr = *stack_a;
+	size = ft_lstsize(ptr);
+	idx = 0;
+	while (ptr)
+	{
+		body_ptr = (t_body *)ptr->content;
+		if (((body_ptr->n >> bits) & 1) == 1)
+			break;
+		idx++;
+		ptr = ptr->next;
+	}
+	if (idx <= size / 2)
+	{
+		while (idx--)
+			rotate(stack_a, stack_b, 'a');
+		return ;
+	}
+	while (idx++ < size)
+		rev_rotate(stack_a, stack_b, 'a');
+}
+
+int	check_sorted(t_list *stack_a)
+{
+	t_list	*ptr;
+	t_list	*temp;
+	t_body	*body_ptr;
+	t_body	*body_temp;
+	int		check;
+
+	check = 1;
+	ptr = stack_a;
+	while (ptr->next)
+	{
+		if (ptr->content)
+			body_ptr = (t_body *)ptr->content;
+		temp = ptr->next;
+		if (temp->content)
+			body_temp = (t_body *)temp->content;
+		if (body_ptr && body_temp && body_ptr->n > body_temp->n)
+			check = 0;
+		ptr = ptr->next;
+	}
+	return (check);
+}
+
+static void sort_three(t_list **stack_a, t_list **stack_b)
+{
+	int	first;
+	int	second;
+	int	third;
+
+	first = ((t_body *)(*stack_a)->content)->n;
+	second = ((t_body *)(*stack_a)->next->content)->n;
+	third = ((t_body *)ft_lstlast(*stack_a)->content)->n;
+	if (first > second && second > third)
+	{
+		swap(stack_a, stack_b, 'a');
+		rev_rotate(stack_a, stack_b, 'a');	
+	}
+	if (first > third && second > first)
+		rev_rotate(stack_a, stack_b, 'a');
+	if (first > second && second < third && first > third)
+		rotate(stack_a, stack_b, 'a');
+	if (first < second && second > third && first < third)
+	{
+		rev_rotate(stack_a, stack_b, 'a');
+		swap(stack_a, stack_b, 'a');
+	}
+	if (first > third && second > first)
+		rev_rotate(stack_a, stack_b, 'a');
+	if (first > second && second < third && first > third)
+		rotate(stack_a, stack_b, 'a');
+}
+
+static void	sort_large(t_list **stack_a, t_list **stack_b, int *moves)
+{
+	t_list	*ptr;
+	t_body	*body_a;
+	int		bits;
+	int		idx;
+	int		size;
+
+	bits = -1;
+	while (++bits < 9)
+	{
+		ptr = *stack_a;
+		size = ft_lstsize(ptr);
+		while (size-- && !check_sorted(*stack_a))
+		{
+			body_a = ptr->content;
+			ptr = ptr->next;
+			idx = body_a->i;
+			if (((idx >> bits) & 1) == 0)
+				push(stack_a, stack_b, 'b');
+			else if (ft_lstsize(*stack_a) > 1)
+				rotate(stack_a, stack_b, 'a');
+		}
+		while (*stack_b)
+			push(stack_a, stack_b, 'a');
+	}	
 }
 
 int	main(int argc, char **argv)
 {
 	t_list	*stack_a;
 	t_list	*stack_b;
+	int		moves;
 
-	if (argc < 2)
+	if (argc < 1)
 		return (ft_putstr_fd("Error\n", 1), 0);
 	stack_a = NULL;
 	stack_b = NULL;
+	moves = 0;
 	if (!check_av(&stack_a, argv))
 		return (ft_lstclear(&stack_a, free), ft_putstr_fd("Error\n", 1), 0);
-	ft_putstr_fd("Checked successfully that all parameters are numbers!\n", 1);
-	see_stack(stack_a);
-	
-	ft_putstr_fd("Added successfully all the data to stack_a\n", 1);
-	ft_printf("size -->> %d\n", ft_lstsize(stack_a));
-
-	set_index(stack_a, ft_lstsize(stack_a));
-	ft_putstr_fd("after setting index: \n", 1);
-	see_idx(stack_a);
-	// ********************* OJOOOO  ********************************
-	// incerc sa pushui elementele cu cel mai mare numar de cifre din a in b in interiorul unei bucle while
-	// atat timp cat pushui cate unu, incerc sa le sortez direct prin sort_b;
-	//
-	//	while (push_elemets(&stack_a, &stack_b, digits(&stack_a)))
-	//		sort_b(&stack_b);
-	// ***************************************************************** 
-
-	// see_stacks(stack_a, stack_b);
-	// if (stack_b)
-	// 	free_stack(stack_b);
+	if 	(ft_lstsize(stack_a) < 2)
+		return (ft_lstclear(&stack_a, free), 0);
+	if (ft_lstsize(stack_a) == 2 && !check_sorted(stack_a))
+		return (swap(&stack_a, &stack_b, 'a'), ft_lstclear(&stack_a, free), 0);
+	if (ft_lstsize(stack_a) == 3)
+		return (sort_three(&stack_a, &stack_b), ft_lstclear(&stack_a, free), 0);
+	set_index(stack_a, ft_lstsize(stack_a), 0);
+	sort_large(&stack_a, &stack_b, &moves);
 	ft_lstclear(&stack_a, free);
 	return (0);
 }
+
+
+/*
+static void	send_bits(t_list **stack_a, t_list **stack_b, int bits)
+{
+	t_body	*ba;
+	int		bit;
+	int		n;
+	
+	ba = (*stack_a)->content;
+	n = ba->n;
+	bit = ;
+	if (bit == 0)
+		push(stack_a, stack_b, 'b');
+	else
+		rotate(stack_a, stack_b, 'a');
+}
+*/
+

@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 18:40:05 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/14 12:26:43 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:39:10 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,33 @@
 static int	add_body(t_list **stack_a, char *nbr)
 {
 	t_body  *b;
+	char	*ptr;
 	long	check;
-
-	check = ft_atoi(nbr);
+	
+	ptr = nbr;
+	if (*ptr == '-')
+		ptr++;
+	while (*ptr)
+	{
+		if (!ft_isdigit(*ptr))
+			return (0);
+		ptr++;
+	}
+	if (*nbr)
+		check = ft_atoi(nbr);
 	if (check >= INT_MIN && check <= INT_MAX)
 	{
 		b = (t_body *)malloc(sizeof(t_body));
-		b->number = check;
-		b->idx = 0;
+		b->n = check;
+		b->i = 0;
 		ft_lstadd_back(stack_a, ft_lstnew(b));
-		return (1);
 	}
-	return (0);
+	else
+		return (0);
+	return (1);
 }
 
-static int	check_error(t_list *stack_a)
+static int	check_duplicate(t_list *stack_a)
 {
 	t_list	*ptr1;
 	t_list	*ptr2;
@@ -44,7 +56,7 @@ static int	check_error(t_list *stack_a)
 		while (ptr2)
 		{
 			b2 = ptr2->content;
-			if (b1->number == b2->number)
+			if (b1->n == b2->n)
 				return (0);
 			ptr2 = ptr2->next;
 		}
@@ -82,11 +94,11 @@ int	check_av(t_list **stack_a, char **argv)
 		if (i == 1 && ft_strchr(argv[i], ' '))
 		{
 			if (argv[2] || !split_case(stack_a, argv[i]))
-				return (0);
-			return (check_error(*stack_a));
+				return (0);	
+			return (check_duplicate(*stack_a));
 		}
 		if (!add_body(stack_a, argv[i]))
 			return (0);
 	}
-	return (check_error(*stack_a));
+	return (check_duplicate(*stack_a));
 }
