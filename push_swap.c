@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 10:20:09 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/18 11:28:06 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:39:23 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,24 @@ static void	see_idx(t_list *stack)
 	}
 }
 
+static int check_bit(t_list **stack, int bits, int bit)
+{
+	t_list	*ptr;
+	t_body	*body_ptr;
+	int		check;
+
+	check = 0;
+	ptr = *stack;
+	while (ptr)
+	{
+		body_ptr = (t_body *)ptr->content;
+		if (((body_ptr->i >> bits) & 1) == bit)
+			check = 1;
+		ptr = ptr->next;
+	}
+	return (check);
+}
+
 // for rotate or rev_rotate in a for searching item to push to b;
 static int smart_move(t_list **stack_a, t_list **stack_b, int bits)
 {
@@ -263,13 +281,14 @@ static void push_to_a(t_list **stack_a, t_list **stack_b, int bits)
 	t_list	*ptr;
 	t_list	*buf;
 	t_body	*body_sb;
-
+	int		size;
+	
 	ptr = *stack_b;
-	while (ptr)
+	while (check_bit(stack_b, bits + 1, 1))
 	{
 		buf = ptr->next;
 		body_sb = ptr->content;
-		if ((body_sb->i >> (bits + 1)) & 1)
+		if ((body_sb->i >> (bits + 1)) & 1 == 0)
 			rotate(stack_a, stack_b, 'b');
 		else
 			push(stack_a, stack_b, 'a');
@@ -324,7 +343,7 @@ static int	check_sorted(t_list *stack_a)
 		if (ptr->content)
 			body_ptr = (t_body *)ptr->content;
 		temp = ptr->next;
-		if (temp->content)
+		if (temp && temp->content)
 			body_temp = (t_body *)temp->content;
 		if (body_ptr && body_temp && body_ptr->n > body_temp->n)
 			check = 0;
@@ -357,18 +376,37 @@ static void sort_three(t_list **stack_a, t_list **stack_b)
 		rev_rotate(stack_a, stack_b, 'a');
 		swap(stack_a, stack_b, 'a');
 	}
-	if (first > third && second > first)
-		rev_rotate(stack_a, stack_b, 'a');
 	if (first > second && second < third && first > third)
 		rotate(stack_a, stack_b, 'a');
 }
 
 static void sort_five (t_list **stack_a, t_list **stack_b)
 {
-	
+	int	idx_b;
+	int	idx_af;
+	int	idx_as;
+
+	set_index(*stack_a, ft_lstsize(*stack_a), 0);
+	push(stack_a, stack_b, 'b');
+	if (ft_lstsize(*stack_a) == 5)
+		push(stack_a, stack_b, 'b');
+	sort_three(stack_a, stack_b);
+	idx_b = ((t_body *)(*stack_b)->content)->i;
+	idx_af = ((t_body *)(*stack_a)->content)->i;
+	idx_as = ((t_body *)(*stack_a)->next->content)->i;
+	if (idx_b == 1 || idx_b == 2)
+		push(stack_a, stack_b, 'a');	
+	if (idx_b == 2 && idx_af == 1)
+		swap(stack_a, stack_b, 'a');	
+	if (idx_b == 3 && idx_af == 1 && idx_as > 2)
+	{
+		push(stack_a, stack_b, 'a');
+		swap(stack_a, stack_b, 'a';)
+	}
 }
+
 // sort a stack larger than 5
-static void	sort_large(t_list **stack_a, t_list **stack_b, int *moves)
+static void	sort_large(t_list **stack_a, t_list **stack_b)
 {
 	t_list	*ptr;
 	t_body	*body_a;
@@ -377,47 +415,48 @@ static void	sort_large(t_list **stack_a, t_list **stack_b, int *moves)
 	int		size;
 
 	bits = -1;
-	while (++bits < 9)
+	while (!check_sorted(*stack_a))
 	{
-		ptr = *stack_a;
-		size = ft_lstsize(ptr);
-		while (size-- && !check_sorted(*stack_a))
+		++bits;
+		size = ft_lstsize(*stack_a);
+		while (check_bit(stack_a, bits, 0))
 		{
+			ptr = *stack_a;
 			body_a = ptr->content;
 			ptr = ptr->next;
 			idx = body_a->i;
 			if (((idx >> bits) & 1) == 0)
 				push(stack_a, stack_b, 'b');
-			if (smart_move(stack_a, stack_b, bits))
-				rotate(stack_a, stack_b, 'a');
 			else
-				rev_rotate(stack_a, stack_b, 'a');
+				rotate(stack_a, stack_b, 'a');
 		}
 		push_to_a(stack_a, stack_b, bits);
-	}	
+	}
 }
 
 int	main(int argc, char **argv)
 {
 	t_list	*stack_a;
 	t_list	*stack_b;
-	int		moves;
 
 	if (argc < 1)
 		return (ft_putstr_fd("Error\n", 1), 0);
 	stack_a = NULL;
 	stack_b = NULL;
-	moves = 0;
 	if (!check_av(&stack_a, argv))
 		return (ft_lstclear(&stack_a, free), ft_putstr_fd("Error\n", 1), 0);
 	if 	(ft_lstsize(stack_a) < 2)
 		return (ft_lstclear(&stack_a, free), 0);
 	if (ft_lstsize(stack_a) == 2 && !check_sorted(stack_a))
 		return (swap(&stack_a, &stack_b, 'a'), ft_lstclear(&stack_a, free), 0);
+	if (check_sorted(stack_a))
+		return (ft_lstclear(&stack_a, free), 0);
 	if (ft_lstsize(stack_a) == 3)
 		return (sort_three(&stack_a, &stack_b), ft_lstclear(&stack_a, free), 0);
+	if (ft_lstsize(stack_a) <= 5)
+		return (sort_five(&stack_a, &stack_b), ft_lstclear(&stack_a, free), 0);
 	set_index(stack_a, ft_lstsize(stack_a), 0);
-	sort_large(&stack_a, &stack_b, &moves);
+	sort_large(&stack_a, &stack_b);
 	ft_lstclear(&stack_a, free);
 	return (0);
 }
