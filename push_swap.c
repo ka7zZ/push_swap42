@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 10:20:09 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/17 19:00:10 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:28:06 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,58 @@ static void	see_idx(t_list *stack)
 	}
 }
 
+// for rotate or rev_rotate in a for searching item to push to b;
+static int smart_move(t_list **stack_a, t_list **stack_b, int bits)
+{
+	t_list	*ptr;
+	t_body	*body_ptr;
+	int		ra;
+	int		rra;
+	int		size;
+	
+	ptr = *stack_a;
+	ra = 0;
+	rra = 0;
+	size = ft_lstsize(ptr);
+	while (ptr)
+	{
+		body_ptr = (t_body *)ptr->content;
+		if (!((body_ptr->i >> bits) & 1))
+		{
+			if (!ra)
+				ra = ft_lstsize(*stack_a) - size;
+			rra = size;
+		}
+		size--;
+		ptr = ptr->next;
+	}
+	if (ra < rra)
+		return (1);
+	return (0);
+}
+
+// push to a from b: logic
+static void push_to_a(t_list **stack_a, t_list **stack_b, int bits)
+{
+	t_list	*ptr;
+	t_list	*buf;
+	t_body	*body_sb;
+
+	ptr = *stack_b;
+	while (ptr)
+	{
+		buf = ptr->next;
+		body_sb = ptr->content;
+		if ((body_sb->i >> (bits + 1)) & 1)
+			rotate(stack_a, stack_b, 'b');
+		else
+			push(stack_a, stack_b, 'a');
+		if (buf)
+			ptr = buf;
+	}
+}
+
+// setting the indexes for all the numbers
 static void	set_index(t_list *stack_a, int length, int idx)
 {
 	t_list	*ptr;
@@ -256,35 +308,8 @@ static void	set_index(t_list *stack_a, int length, int idx)
 	}
 }
 
-static void	optimize_search(t_list **stack_a, t_list **stack_b, int bits)
-{
-	t_list	*ptr;
-	t_body	*body_ptr;
-	int		idx;
-	int		size;
-
-	ptr = *stack_a;
-	size = ft_lstsize(ptr);
-	idx = 0;
-	while (ptr)
-	{
-		body_ptr = (t_body *)ptr->content;
-		if (((body_ptr->n >> bits) & 1) == 1)
-			break;
-		idx++;
-		ptr = ptr->next;
-	}
-	if (idx <= size / 2)
-	{
-		while (idx--)
-			rotate(stack_a, stack_b, 'a');
-		return ;
-	}
-	while (idx++ < size)
-		rev_rotate(stack_a, stack_b, 'a');
-}
-
-int	check_sorted(t_list *stack_a)
+// checking if its sorted
+static int	check_sorted(t_list *stack_a)
 {
 	t_list	*ptr;
 	t_list	*temp;
@@ -308,6 +333,7 @@ int	check_sorted(t_list *stack_a)
 	return (check);
 }
 
+// sort a stack of three
 static void sort_three(t_list **stack_a, t_list **stack_b)
 {
 	int	first;
@@ -337,6 +363,11 @@ static void sort_three(t_list **stack_a, t_list **stack_b)
 		rotate(stack_a, stack_b, 'a');
 }
 
+static void sort_five (t_list **stack_a, t_list **stack_b)
+{
+	
+}
+// sort a stack larger than 5
 static void	sort_large(t_list **stack_a, t_list **stack_b, int *moves)
 {
 	t_list	*ptr;
@@ -357,11 +388,12 @@ static void	sort_large(t_list **stack_a, t_list **stack_b, int *moves)
 			idx = body_a->i;
 			if (((idx >> bits) & 1) == 0)
 				push(stack_a, stack_b, 'b');
-			else if (ft_lstsize(*stack_a) > 1)
+			if (smart_move(stack_a, stack_b, bits))
 				rotate(stack_a, stack_b, 'a');
+			else
+				rev_rotate(stack_a, stack_b, 'a');
 		}
-		while (*stack_b)
-			push(stack_a, stack_b, 'a');
+		push_to_a(stack_a, stack_b, bits);
 	}	
 }
 
