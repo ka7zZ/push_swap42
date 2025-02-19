@@ -1,6 +1,136 @@
 #include "libft/libft.h"
-#include "push_swap.h"
 
+int main(int ac, char **av)
+{
+	/*content of main of test-c
+	// t_list  *stack_a;
+	// t_list  *stack_b;
+	// int		check_digits;
+	// int		bz;
+	// int		moves;
+
+	// if (ac < 2)
+	// 	return (ft_putstr_fd("Error\n", 1), 0);
+	// stack_a = NULL;
+	// stack_b = NULL;
+	// if (!check_av(&stack_a, av))
+	// 	return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
+	
+	// bz = ft_lstsize(stack_a);
+	// moves = 0;
+	// if (bz > 20)
+	// {
+	// 	check_digits = digits(&stack_a);
+	// 	while (check_digits)
+	// 	{
+	// 		while (push_b(&stack_a, &stack_b, check_digits, &moves));
+	// 		check_digits--;
+	// 	}
+	// 	while (!check_stop(stack_a))
+	// 		arrange(&stack_a, &stack_b, 'a', &moves);		
+	// 	while (!check_stop(stack_b))
+	// 		arrange(&stack_a, &stack_b, 'b', &moves);
+	// 	push_a(&stack_a, &stack_b, check_digits, &moves);
+	// }
+	// while (!check_stop(stack_a))
+	// 	arrange(&stack_a, &stack_b, 'a', &moves);
+	// see_stack(stack_a);
+	// ft_printf("moves -->> %d\n", moves);
+	// moves = 0;
+	// while (!check_stop(stack_a))
+	// 	arrange_stack(&stack_a, &stack_b, 'a', &moves);
+	// ft_printf("moves -->> %d\n", moves);	
+	// see_stack(stack_a);
+	*/
+	printf("Converted: %ld\n", ft_atoi("-2147483648"));
+	printf("Converted: %ld\n", ft_atoi("2147483647"));
+	return (0);
+}
+
+/* divide stack
+static void	divide_stack(t_list **stack_a, t_list **stack_b)
+{
+	int	biggest;
+	int	size;
+
+	biggest = digits(stack_a)
+	if (*stack_a)
+		size = ft_lstsize(*stack_a);
+	while (*stack_a && (*stack_a)->next && ft_lstsize(*stack_a) != size / 2)
+	{
+		ptr = (*stack_a)->next;
+		first_a = ft_atoi((char *)(*stack_a)->content);
+		second_a = ft_atoi((char *)(*stack_a)->next->content);
+		if (first_a > second_a)
+			pb(stack_a, stack_b);
+		else
+			ra(stack_a);
+		*stack_a = ptr;
+	}
+	while (!check_stop(*stack_a, 'a'))
+		arrange(stack_a, 'a');
+	while(!check_stop(*stack_b, 'b'))
+		arrange(stack_b, 'b');
+}
+*/
+
+/* ex arrange
+// function to push to stack_a arranged elements from stack_b
+static void arrange(t_list **stack_a, t_list **stack_b)
+{
+	int	first;
+	int second;
+	int	last;
+	int	size;
+
+	if (*stack_b && (*stack_b)->next && !check_stop(*stack_b))
+	{
+		first = ft_atoi((char *)(*stack_b)->content);
+		second = ft_atoi((char *)(*stack_b)->next->content);
+		last = ft_atoi((char *)ft_lstlast(*stack_b)->content);
+		if (first < second)
+			sb(stack_b);
+		else if (first > second && first > last && second < last )
+			rrb(stack_b);
+		else
+			rb(stack_b);
+	}
+}
+*/
+
+/* send_bucket intent
+// send arranged buckets to stack_a
+static void	ft_send_bucket(t_list **stack_a, t_list **stack_b, int *moves)
+{
+	t_list	*head_a;
+	t_list	*head_b;
+	int		first;
+	int		second;
+	int		last;
+
+	pa(stack_a, stack_b);
+	while (ft_atoi((*stack_a)->content) > ft_atoi((*stack_a)->next->content))
+	{
+		
+	}
+}
+*/
+
+/* arrangeby_digit intent
+static void	arrangeby_digits(t_list **stack_a)
+{
+	t_list	*ptr;
+	int		max_digits;
+	int		i;
+
+	ptr = *stack_a;
+	max_digits = digits(stack_a);
+	i = 0;
+
+}
+*/
+
+/* another functions of test
 static void	see_stacks(t_list *a, t_list *b)
 {
 	t_list	*stack_a;
@@ -92,11 +222,7 @@ static int	max_digits(t_list **stack_a)
 	}
 	return (check_digits);
 }
-
-static int push(t_list **stack_a, t_list **stack_b, int digit, int *moves)
-{
-
-}
+*/
 
 /*
 - arrange stack by the positive digits and negative digits
@@ -143,6 +269,8 @@ push stack b into stack a
 
 */
 
+/* functions of test.c
+
 typedef struct test
 {
 	int	number;
@@ -161,6 +289,26 @@ static void init(t_list *head)
 		ptr_content->index = 0;
 		ptr = ptr->next;	
 	}
+
+static int	push_a(t_list **a, t_list **b, int check_digits, int *moves)
+{
+	t_list *ptr;
+	int		check;
+	
+	check = 0;
+	while (*b)
+	{
+		check = 1;
+		ptr = (*b)->next;
+		push(a, b, 'a');
+		if (!check_digits)
+			rotate(a, b, 'a');
+		*moves += 2;
+		*b = ptr;
+	}
+	return (check);
+}
+
 }
 
 // function to stop applying the algorythm to the stack_b
@@ -265,6 +413,8 @@ static void	optimize_search(t_list **stack_a, t_list **stack_b, int digits, int 
 		rev_rotate(stack_a, stack_b, 'a');
 }
 
+*/
+
 /* push_b func 
 //function to push elements from stack_a to stack_b with the digits number
 static int	push_b(t_list **stack_a, t_list **stack_b, int check_digits, int *moves)
@@ -282,178 +432,6 @@ static int	push_b(t_list **stack_a, t_list **stack_b, int check_digits, int *mov
 		*moves += 1;
 	}
 	return (res);
-}
-*/
-
-// static void arrange_bydigit(t_list **stack_a, t_list **stack_a, int check_digits, int *moves)
-// {
-// 	while (ft_strlen((char *)(*stack_a)->content) )
-// }
-
-
-static int	push_a(t_list **a, t_list **b, int check_digits, int *moves)
-{
-	t_list *ptr;
-	int		check;
-	
-	check = 0;
-	while (*b)
-	{
-		check = 1;
-		ptr = (*b)->next;
-		push(a, b, 'a');
-		if (!check_digits)
-			rotate(a, b, 'a');
-		*moves += 2;
-		*b = ptr;
-	}
-	return (check);
-}
-
-int main(int ac, char **av)
-{
-	t_list  *stack_a;
-	t_list  *stack_b;
-	int		check_digits;
-	int		bz;
-	int		moves;
-
-	if (ac < 2)
-		return (ft_putstr_fd("Error\n", 1), 0);
-	stack_a = NULL;
-	stack_b = NULL;
-	if (!check_av(&stack_a, av))
-		return (free_stack(stack_a), ft_putstr_fd("Error\n", 1), 0);
-	
-	/* what were before
-	bz = ft_lstsize(stack_a);
-	moves = 0;
-	if (bz > 20)
-	{
-		check_digits = digits(&stack_a);
-		while (check_digits)
-		{
-			while (push_b(&stack_a, &stack_b, check_digits, &moves));
-			check_digits--;
-		}
-		while (!check_stop(stack_a))
-			arrange(&stack_a, &stack_b, 'a', &moves);		
-		while (!check_stop(stack_b))
-			arrange(&stack_a, &stack_b, 'b', &moves);
-		push_a(&stack_a, &stack_b, check_digits, &moves);
-	}
-	while (!check_stop(stack_a))
-		arrange(&stack_a, &stack_b, 'a', &moves);
-	see_stack(stack_a);
-	ft_printf("moves -->> %d\n", moves);
-	*/
-	moves = 0;
-	while (!check_stop(stack_a))
-		arrange_stack(&stack_a, &stack_b, 'a', &moves);
-	ft_printf("moves -->> %d\n", moves);	
-	see_stack(stack_a);
-	return (0);
-}
-
-
-t_list
-{
-	number;
-	set_index;
-	*next;
-}
-
-(head)node1 = {8. 0};
-node2 = {10, 0};
-node1->next = node2;
-
-ptr_node1 = node1
-ptr_node1  = ptr_node_next;
-
-ptr_node1_next;
-node1 = node1->next
-
-
-/* divide stack
-static void	divide_stack(t_list **stack_a, t_list **stack_b)
-{
-	int	biggest;
-	int	size;
-
-	biggest = digits(stack_a)
-	if (*stack_a)
-		size = ft_lstsize(*stack_a);
-	while (*stack_a && (*stack_a)->next && ft_lstsize(*stack_a) != size / 2)
-	{
-		ptr = (*stack_a)->next;
-		first_a = ft_atoi((char *)(*stack_a)->content);
-		second_a = ft_atoi((char *)(*stack_a)->next->content);
-		if (first_a > second_a)
-			pb(stack_a, stack_b);
-		else
-			ra(stack_a);
-		*stack_a = ptr;
-	}
-	while (!check_stop(*stack_a, 'a'))
-		arrange(stack_a, 'a');
-	while(!check_stop(*stack_b, 'b'))
-		arrange(stack_b, 'b');
-}
-*/
-
-/* ex arrange
-// function to push to stack_a arranged elements from stack_b
-static void arrange(t_list **stack_a, t_list **stack_b)
-{
-	int	first;
-	int second;
-	int	last;
-	int	size;
-
-	if (*stack_b && (*stack_b)->next && !check_stop(*stack_b))
-	{
-		first = ft_atoi((char *)(*stack_b)->content);
-		second = ft_atoi((char *)(*stack_b)->next->content);
-		last = ft_atoi((char *)ft_lstlast(*stack_b)->content);
-		if (first < second)
-			sb(stack_b);
-		else if (first > second && first > last && second < last )
-			rrb(stack_b);
-		else
-			rb(stack_b);
-	}
-}
-*/
-
-/* send_bucket intent
-// send arranged buckets to stack_a
-static void	ft_send_bucket(t_list **stack_a, t_list **stack_b, int *moves)
-{
-	t_list	*head_a;
-	t_list	*head_b;
-	int		first;
-	int		second;
-	int		last;
-
-	pa(stack_a, stack_b);
-	while (ft_atoi((*stack_a)->content) > ft_atoi((*stack_a)->next->content))
-	{
-		
-	}
-}
-*/
-
-/* arrangeby_digit intent
-static void	arrangeby_digits(t_list **stack_a)
-{
-	t_list	*ptr;
-	int		max_digits;
-	int		i;
-
-	ptr = *stack_a;
-	max_digits = digits(stack_a);
-	i = 0;
-
 }
 */
 
