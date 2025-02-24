@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:24:18 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/19 12:39:16 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:24:04 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void sort_three(t_list **stack_a, t_list **stack_b)
 static void	push_to_b(t_list **stack_a, t_list **stack_b)
 {
 	t_body	*body_a;
-	int		pos;
+	size_t	pos;
 
 	while (ft_lstsize(*stack_a) > 3)
 	{

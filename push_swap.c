@@ -6,12 +6,49 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 10:20:09 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/22 18:53:01 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 17:45:31 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "push_swap.h"
+
+static void	see_idx(t_list *stack)
+{
+	t_list	*ptr;
+	t_body	*b;
+	
+	ptr = stack;
+	ft_putstr_fd("Stack:\n", 1);
+	while (ptr)
+	{
+		b = ptr->content;
+		ft_printf("%d - %d\n", b->n, b->i);
+		ptr = ptr->next;
+	}
+}
+
+int	main(int argc, char **argv)
+{
+	t_list	*stack_a;
+	t_list	*stack_b;
+
+	if (argc < 1)
+		return (ft_putstr_fd("Error\n", 1), 0);
+	stack_a = NULL;
+	stack_b = NULL;
+	if (!check_av(&stack_a, argv))
+		return (ft_lstclear(&stack_a, free), ft_putstr_fd("Error\n", 1), 0);
+	if (check_sorted(stack_a))
+		return (ft_lstclear(&stack_a, free), 0);
+	if (ft_lstsize(stack_a) <= 5)
+		return (sort_min(&stack_a, &stack_b), ft_lstclear(&stack_a, free), 0);
+	set_index(stack_a, ft_lstsize(stack_a), 0);
+	see_idx(stack_a);
+	sort_large(&stack_a, &stack_b);
+	see_idx(stack_a);
+	ft_lstclear(&stack_a, free);
+	return (0);
+}
 
 /*	INTENT WITH LIBFT LISTS FUNCTIONS
 
@@ -197,6 +234,8 @@ static int	push_elemets(t_list **stack_a, t_list **stack_b, int check_digits)
 	// see_stacks(stack_a, stack_b);
 
 */
+/*functions needed by testing pushswap
+
 
 static void	see_stack(t_list *stack)
 {
@@ -212,42 +251,8 @@ static void	see_stack(t_list *stack)
 	}
 }
 
-static void	see_idx(t_list *stack)
-{
-	t_list	*ptr;
-	t_body	*b;
-	
-	ptr = stack;
-	ft_putstr_fd("Stack:\n", 1);
-	while (ptr)
-	{
-		b = ptr->content;
-		ft_printf("%d - %d\n", b->n, b->i);
-		ptr = ptr->next;
-	}
-}
 
-int	main(int argc, char **argv)
-{
-	t_list	*stack_a;
-	t_list	*stack_b;
-
-	if (argc < 1)
-		return (ft_putstr_fd("Error\n", 1), 0);
-	stack_a = NULL;
-	stack_b = NULL;
-	if (!check_av(&stack_a, argv))
-		return (ft_lstclear(&stack_a, free), ft_putstr_fd("Error\n", 1), 0);
-	if (check_sorted(stack_a))
-		return (ft_lstclear(&stack_a, free), 0);
-	if (ft_lstsize(stack_a) <= 5)
-		return (sort_min(&stack_a, &stack_b), ft_lstclear(&stack_a, free), 0);
-	set_index(stack_a, ft_lstsize(stack_a), 0);
-	sort_large(&stack_a, &stack_b);
-	ft_lstclear(&stack_a, free);
-	return (0);
-}
-
+*/
 /*function that no longer needed but still i have to think of a better way of the algorithm
 
 // for rotate or rev_rotate in a for searching item to push to b;
@@ -305,3 +310,4 @@ static void push_to_a(t_list **stack_a, t_list **stack_b, int bits)
 
 
 */
+
