@@ -6,14 +6,14 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:09:25 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/24 19:36:55 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:51:44 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include <limits.h>
 
 typedef struct Body

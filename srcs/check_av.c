@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 18:40:05 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/24 19:36:04 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:51:02 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 static int	initial_check(char *nbr)
 {

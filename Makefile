@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 18:46:55 by aghergut          #+#    #+#              #
-#    Updated: 2025/02/24 15:28:10 by aghergut         ###   ########.fr        #
+#    Updated: 2025/02/24 19:53:39 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,15 +37,15 @@ FLAGS_LIBFT = -Llibft -lft
 INCLUDES = -Ilibft -I.
 
 # SOURCES
-SRCS = 	instructions/push_case.c \
-		instructions/rotate_case.c \
-		instructions/rrotate_case.c \
-		instructions/swap_case.c \
-		check_av.c \
-		sort_min.c \
-		sort_large.c \
-		sort_utils.c \
-		push_swap.c
+SRCS = 	srcs/instructions/push_case.c \
+		srcs/instructions/rotate_case.c \
+		srcs/instructions/rrotate_case.c \
+		srcs/instructions/swap_case.c \
+		srcs/check_av.c \
+		srcs/sort_min.c \
+		srcs/sort_large.c \
+		srcs/sort_utils.c \
+		srcs/push_swap.c
 
 # OBJECTS
 OBJS_FOLDER = objects/

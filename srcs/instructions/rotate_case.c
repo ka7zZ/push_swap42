@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 18:55:51 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/24 19:46:15 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:52:50 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../push_swap.h"
+#include "../../include/push_swap.h"
 
 static void	ra(t_list **a)
 {

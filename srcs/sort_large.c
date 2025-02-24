@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 18:22:53 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/24 19:43:37 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:51:16 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 static int	get_max(t_list *stack)
 {
