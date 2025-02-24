@@ -6,20 +6,20 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 18:40:05 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/17 17:39:10 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 18:31:53 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int	add_body(t_list **stack_a, char *nbr)
+static int	initial_check(char *nbr)
 {
-	t_body  *b;
-	char	*ptr;
-	long	check;
+	char *ptr;
 	
+	if (!(*nbr))
+		return (0);
 	ptr = nbr;
-	if (*ptr == '-')
+	if (ptr && *ptr == '-')
 		ptr++;
 	while (*ptr)
 	{
@@ -27,8 +27,19 @@ static int	add_body(t_list **stack_a, char *nbr)
 			return (0);
 		ptr++;
 	}
-	if (*nbr)
+	return (1);
+}
+
+static int	add_body(t_list **stack_a, char *nbr)
+{
+	t_body  *b;
+	long	check;
+	
+	check = 0;
+	if (initial_check(nbr))
 		check = ft_atoi(nbr);
+	else
+		return (0);
 	if (check >= INT_MIN && check <= INT_MAX)
 	{
 		b = (t_body *)malloc(sizeof(t_body));

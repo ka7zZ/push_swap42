@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:09:25 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/19 12:38:36 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:24:18 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int		check_bit(t_list **stack, int bits, int bit);
 int		idx_pos(t_list **stack, int idx);
 // SORT MIN
 void	sort_min(t_list **stack_a, t_list **stack_b);
+// SORT LARGE
+void	sort_large(t_list **stack_a, t_list **stack_b);
 // MAIN PROGRAM
 int		main(int argc, char **argv);
 #endif

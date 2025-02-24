@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 10:20:09 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/19 17:44:49 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 18:53:01 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,35 +227,28 @@ static void	see_idx(t_list *stack)
 	}
 }
 
-static int	get_max(t_list **stack)
+int	main(int argc, char **argv)
 {
-	t_list	*ptr;
-	t_body	*body_ptr;
-	int		res;
+	t_list	*stack_a;
+	t_list	*stack_b;
 
-	ptr = *stack;
-	res = 0;
-	while (ptr)
-	{
-		body_ptr = (t_body *)ptr->content;
-		if (body_ptr->i > res)
-			res = body_ptr->i;
-		ptr = ptr->next;
-	}
-	return (res);
+	if (argc < 1)
+		return (ft_putstr_fd("Error\n", 1), 0);
+	stack_a = NULL;
+	stack_b = NULL;
+	if (!check_av(&stack_a, argv))
+		return (ft_lstclear(&stack_a, free), ft_putstr_fd("Error\n", 1), 0);
+	if (check_sorted(stack_a))
+		return (ft_lstclear(&stack_a, free), 0);
+	if (ft_lstsize(stack_a) <= 5)
+		return (sort_min(&stack_a, &stack_b), ft_lstclear(&stack_a, free), 0);
+	set_index(stack_a, ft_lstsize(stack_a), 0);
+	sort_large(&stack_a, &stack_b);
+	ft_lstclear(&stack_a, free);
+	return (0);
 }
 
-unsigned int count_bits(unsigned int n) 
-{ 
-   unsigned int count = 0;
-   
-   while (n) 
-   { 
-        count++; 
-        n >>= 1; 
-    } 
-    return (count); 
-}
+/*function that no longer needed but still i have to think of a better way of the algorithm
 
 // for rotate or rev_rotate in a for searching item to push to b;
 static int smart_move(t_list **stack_a, t_list **stack_b, int bits)
@@ -287,6 +280,7 @@ static int smart_move(t_list **stack_a, t_list **stack_b, int bits)
 	return (0);
 }
 
+
 // push to a from b: logic
 static void push_to_a(t_list **stack_a, t_list **stack_b, int bits)
 {
@@ -309,53 +303,5 @@ static void push_to_a(t_list **stack_a, t_list **stack_b, int bits)
 	}
 }
 
-// sort a stack larger than 5
-static void	sort_large(t_list **stack_a, t_list **stack_b)
-{
-	t_list	*ptr;
-	t_list	*buf;
-	t_body	*body_a;
-	int		bits;
-	int		fin;
-	int		size;
 
-	bits = -1;
-	fin = count_bits(get_max(stack_a));
-	while (++bits < fin)
-	{
-		size = ft_lstsize(*stack_a);		
-		while (size-- && !check_sorted(*stack_a))
-		{
-			ptr = *stack_a;
-			body_a = (t_body *)ptr->content;
-			if (((body_a->i >> bits) & 1) == 0)
-				push(stack_a, stack_b, 'b');
-			else
-				rotate(stack_a, stack_b, 'a');				
-		}
-		while (*stack_b)
-			push(stack_a, stack_b, 'a');
-	}
-}
-
-int	main(int argc, char **argv)
-{
-	t_list	*stack_a;
-	t_list	*stack_b;
-
-	if (argc < 1)
-		return (ft_putstr_fd("Error\n", 1), 0);
-	stack_a = NULL;
-	stack_b = NULL;
-	if (!check_av(&stack_a, argv))
-		return (ft_lstclear(&stack_a, free), ft_putstr_fd("Error\n", 1), 0);
-	if (check_sorted(stack_a))
-		return (ft_lstclear(&stack_a, free), 0);
-	if (ft_lstsize(stack_a) <= 5)
-		return (sort_min(&stack_a, &stack_b), ft_lstclear(&stack_a, free), 0);
-	set_index(stack_a, ft_lstsize(stack_a), 0);
-	sort_large(&stack_a, &stack_b);
-	ft_lstclear(&stack_a, free);
-	return (0);
-}
-
+*/
