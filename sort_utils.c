@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:29:22 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/19 12:31:22 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:39:44 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	set_index(t_list *stack_a, int length, int idx)
 				buf = ptr->next;
 				bbuf = buf->content;
 			}
-			ptr = ptr->next;	
+			ptr = ptr->next;
 		}
-		bbuf->i = ++idx;	
+		bbuf->i = ++idx;
 	}
 }
 
@@ -65,7 +65,7 @@ int	check_sorted(t_list *stack_a)
 	return (check);
 }
 
-int check_bit(t_list **stack, int bits, int bit)
+int	check_bit(t_list **stack, int bits, int bit)
 {
 	t_list	*ptr;
 	t_body	*body_ptr;
@@ -83,17 +83,17 @@ int check_bit(t_list **stack, int bits, int bit)
 	return (check);
 }
 
-int idx_pos(t_list **stack, int idx)
+int	idx_pos(t_list **stack, int idx)
 {
 	t_list	*ptr;
 	t_body	*body_ptr;
-	int	pos;
-	int	check;
+	int		pos;
+	int		check;
 
 	pos = 0;
 	ptr = *stack;
 	check = 0;
-	while(ptr)
+	while (ptr)
 	{
 		++pos;
 		body_ptr = ptr->content;

@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:43:16 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/19 11:19:28 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:41:53 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "strtoint.h"
+#include "strtoint.h"
 
 long	ft_atoi(const char *str)
 {
@@ -40,4 +40,3 @@ long	ft_atoi(const char *str)
 		return (number);
 	return (LONG_MAX);
 }
-

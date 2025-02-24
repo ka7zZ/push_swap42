@@ -6,13 +6,13 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:24:18 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/24 15:24:04 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:42:53 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void sort_three(t_list **stack_a, t_list **stack_b)
+static void	sort_three(t_list **stack_a, t_list **stack_b)
 {
 	int	first;
 	int	second;
@@ -24,7 +24,7 @@ static void sort_three(t_list **stack_a, t_list **stack_b)
 	if (first > second && second > third)
 	{
 		swap(stack_a, stack_b, 'a');
-		rev_rotate(stack_a, stack_b, 'a');	
+		rev_rotate(stack_a, stack_b, 'a');
 	}
 	if (first > third && second > first)
 		rev_rotate(stack_a, stack_b, 'a');
@@ -55,7 +55,7 @@ static void	push_to_b(t_list **stack_a, t_list **stack_b)
 		if (pos && pos <= ft_lstsize(*stack_a) / 2)
 			rotate(stack_a, stack_b, 'a');
 		else if (pos)
-			rev_rotate(stack_a, stack_b, 'a');	
+			rev_rotate(stack_a, stack_b, 'a');
 	}
 }
 

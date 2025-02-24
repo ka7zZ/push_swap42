@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 18:59:52 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/11 17:38:31 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:47:34 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	sa(t_list **a)
 {
-	t_list *ptr_a;
-	t_list *ptr_next;
+	t_list	*ptr_a;
+	t_list	*ptr_next;
 
 	if (*a && (*a)->next)
 	{
@@ -30,8 +30,8 @@ static void	sa(t_list **a)
 
 static void	sb(t_list **b)
 {
-	t_list *ptr_b;
-	t_list *ptr_next;
+	t_list	*ptr_b;
+	t_list	*ptr_next;
 
 	if (*b && (*b)->next)
 	{

@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:09:25 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/19 18:24:18 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:36:55 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 # include "libft/libft.h"
 # include <limits.h>
 
-typedef struct Body {
-	int n;
-	int i;
+typedef struct Body
+{
+	int	n;
+	int	i;
 }	t_body;
 
 // CHECK ARGUMENTS

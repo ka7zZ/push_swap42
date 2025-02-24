@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 18:58:21 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/11 17:18:06 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:47:06 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ static void	rra(t_list **a)
 		}
 		ptr_buf->next = NULL;
 		ft_lstadd_front(a, ptr_a);
-		write(1, "rra\n", 4);    
+		write(1, "rra\n", 4);
 	}
-	
 }
 
 static void	rrb(t_list **b)
@@ -47,20 +46,18 @@ static void	rrb(t_list **b)
 		}
 		ptr_buf->next = NULL;
 		ft_lstadd_front(b, ptr_a);
-		write(1, "rrb\n", 4); 
+		write(1, "rrb\n", 4);
 	}
-	
 }
 
 static void	rrr(t_list **a, t_list **b)
 {
-	
 	rra(a);
 	rrb(b);
 	write(1, "rrr\n", 4);
 }
 
-void    rev_rotate(t_list **a, t_list **b, char type)
+void	rev_rotate(t_list **a, t_list **b, char type)
 {
 	if (type == 'a')
 		rra(a);
