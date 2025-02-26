@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_av.c                                         :+:      :+:    :+:   */
+/*   check_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 18:40:05 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/24 19:51:02 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/26 17:17:19 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/push_swap.h"
+#include "../../../include/push_swap.h"
 
 static int	initial_check(char *nbr)
 {
@@ -95,7 +95,7 @@ static int	split_case(t_list **stack_a, char *argv)
 	return (1);
 }
 
-int	check_av(t_list **stack_a, char **argv)
+int	check_args(t_list **stack_a, char **argv)
 {
 	int		i;
 

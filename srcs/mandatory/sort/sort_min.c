@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:24:18 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/24 19:51:28 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/26 17:17:51 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/push_swap.h"
+#include "../../../include/push_swap.h"
 
 static void	sort_three(t_list **stack_a, t_list **stack_b)
 {

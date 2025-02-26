@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:09:25 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/24 19:51:44 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/26 17:17:26 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct Body
 }	t_body;
 
 // CHECK ARGUMENTS
-int		check_av(t_list **stack_a, char **argv);
+int		check_args(t_list **stack_a, char **argv);
 // INSTRUCTIONS
 void	push(t_list **a, t_list **b, char type);
 void	swap(t_list **a, t_list **b, char type);

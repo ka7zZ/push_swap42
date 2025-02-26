@@ -62,6 +62,7 @@
     "*.ndjson": "jsonl",
     "*.dbclient-js": "javascript",
     "type_traits": "c",
-    "string_view": "c"
+    "string_view": "c",
+    "push_swap.h": "c"
   }
 }
