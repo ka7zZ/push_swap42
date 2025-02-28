@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:24:18 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/28 11:35:17 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:29:06 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,12 @@ static void	sort_five(t_list **stack_a, t_list **stack_b)
 	push_to_b(stack_a, stack_b);
 	sort_three(stack_a, stack_b);
 	first_b = ((t_body *)(*stack_b)->content)->i;
-    if (ft_lstsize(*stack_b) == 2)
-	{    
-        second_b = ((t_body *)(*stack_b)->next->content)->i;
-        if (first_b < second_b)
-		    swap(stack_a, stack_b, 'b');
-        push(stack_a, stack_b, 'a');
-        push(stack_a, stack_b, 'a');
-    }
-    else
-        push(stack_a, stack_b, 'a');
+	second_b = ((t_body *)(*stack_b)->next->content)->i;
+	if (first_b < second_b)
+		swap(stack_a, stack_b, 'b');
+	if (ft_lstsize(*stack_b) == 2)
+		push(stack_a, stack_b, 'a');
+	push(stack_a, stack_b, 'a');
 }
 
 void	sort_min(t_list **stack_a, t_list **stack_b)
@@ -87,6 +83,6 @@ void	sort_min(t_list **stack_a, t_list **stack_b)
 	else if (ft_lstsize(*stack_a) == 3)
 		sort_three(stack_a, stack_b);
 	else if (ft_lstsize(*stack_a) <= 5)
-        sort_five(stack_a, stack_b);
+		sort_five(stack_a, stack_b);
 	ft_lstclear(stack_a, free);
 }
