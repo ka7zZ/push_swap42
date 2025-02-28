@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 18:46:55 by aghergut          #+#    #+#              #
-#    Updated: 2025/02/26 19:05:38 by aghergut         ###   ########.fr        #
+#    Updated: 2025/02/28 08:11:54 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,8 @@ FCLEAN_LIBFT = @make fclean -C $(LIBFT)
 FLAGS_LIBFT = -Llibft -lft
 
 # INCLUDES
-INCLUDES_NORMAL = -Ilibft -Iinclude/push_swap.h
-INCLUDES_CHECKER = -Ilibft -Iinclude/checker.h
+INCLUDES_NORMAL = -Ilibft -Iinclude/
+INCLUDES_CHECKER = -Ilibft -Iinclude/
 
 # SOURCES
 SRCS_MANDATORY = 	srcs/mandatory/instructions/push_case.c \
@@ -78,7 +78,6 @@ $(OBJS_PUSH)%.o: %.c
 	@$(CC) $(CFLAGS) $(INCLUDES_NORMAL) -c $< -o $@
 
 bonus: $(CHECKER)
-	
 
 $(CHECKER): $(OBJS_CHECKER)
 	@echo "$(CYAN)Creating el checker$(RESET_COLOR)"
