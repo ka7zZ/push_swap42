@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:16:50 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/26 19:10:19 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:44:29 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/checker.h"
+#include "../../include/checker.h"
 
 static void	action(t_list **stack_a, t_list **stack_b, char *instruction)
 {
@@ -35,18 +35,24 @@ static void	action(t_list **stack_a, t_list **stack_b, char *instruction)
 static int	check_sorted(t_list **stack_a)
 {
 	t_list	*ptr;
+	t_list	*buf;
 	int		x;
 	int		y;
-	
+
 	ptr = *stack_a;
 	while (ptr->next)
 	{
+		buf = ptr->next;
 		x = ft_atoi((char *)ptr->content);
-		y = ft_atoi((char *)ptr->next->content);
+		y = ft_atoi((char *)buf->content);
 		if (x > y)
 			return (0);
-		ptr = ptr->next;
+		free(ptr->content);
+		free(ptr);
+		ptr = buf;
 	}
+	free(buf->content);
+	free(ptr);
 	return (1);
 }
 
@@ -55,6 +61,7 @@ int	main(int ac, char **av)
 	t_list	*stack_a;
 	t_list	*stack_b;
 	char	*res;
+
 	if (ac > 2 || !(*av))
 		return (0);
 	stack_a = NULL;

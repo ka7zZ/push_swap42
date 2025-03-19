@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:40:39 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/26 18:45:21 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:41:53 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	add(t_list **stack_a, char *nbr)
 	else
 		return (0);
 	if (check >= INT_MIN && check <= INT_MAX)
-	    ft_lstadd_back(stack_a, ft_lstnew(nbr));
+		ft_lstadd_back(stack_a, ft_lstnew(ft_strdup(nbr)));
 	else
 		return (0);
 	return (1);
@@ -70,8 +70,8 @@ int	create_list(t_list **stack, char **args)
 	while (*args)
 	{
 		if (ft_strchr(*args, ' ') && split_case(stack, *args))
-            return (1);            
+			return (1);
 		args++;
 	}
-    return (0);
+	return (0);
 }

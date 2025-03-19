@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 18:40:05 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/27 14:15:17 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:56:28 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ static int	split_case(t_list **stack_a, char *argv)
 	char	**temp;
 
 	split_case = ft_split(argv, ' ');
+	if (!split_case || !(*split_case))
+		return (0);
 	temp = split_case;
 	while (*split_case)
 	{

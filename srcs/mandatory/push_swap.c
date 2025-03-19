@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 10:20:09 by aghergut          #+#    #+#             */
-/*   Updated: 2025/03/01 21:02:16 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:50:04 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char **argv)
 	t_list	*stack_b;
 
 	if (argc < 2)
-		return (ft_putstr_fd("Error\n", 1), 0);
+		return (0);
 	stack_a = NULL;
 	stack_b = NULL;
 	if (!check_args(&stack_a, argv))

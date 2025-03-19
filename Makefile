@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 18:46:55 by aghergut          #+#    #+#              #
-#    Updated: 2025/02/28 08:11:54 by aghergut         ###   ########.fr        #
+#    Updated: 2025/03/10 16:02:22 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,9 @@ GRAY = \033[0;90m
 MAGENTA = \033[0;95m
 CYAN = \033[0;96m
 WHITE = \033[0;97m
+RED = \033[31m
 RESET_COLOR = \033[0m
+
 
 # PROGRAM NAME
 NAME = push_swap
@@ -35,8 +37,8 @@ FCLEAN_LIBFT = @make fclean -C $(LIBFT)
 FLAGS_LIBFT = -Llibft -lft
 
 # INCLUDES
-INCLUDES_NORMAL = -Ilibft -Iinclude/
-INCLUDES_CHECKER = -Ilibft -Iinclude/
+INCLUDES_NORMAL = -Ilibft -Iinclude/push_swap.h
+INCLUDES_CHECKER = -Ilibft -Iinclude/checker.h
 
 # SOURCES
 SRCS_MANDATORY = 	srcs/mandatory/instructions/push_case.c \
@@ -78,6 +80,7 @@ $(OBJS_PUSH)%.o: %.c
 	@$(CC) $(CFLAGS) $(INCLUDES_NORMAL) -c $< -o $@
 
 bonus: $(CHECKER)
+	
 
 $(CHECKER): $(OBJS_CHECKER)
 	@echo "$(CYAN)Creating el checker$(RESET_COLOR)"
@@ -91,11 +94,12 @@ $(OBJS_CHECK)%.o: %.c
 clean:
 	@rm -Rf $(OBJS_PUSH) $(OBJS_CHECK)
 	@make clean -s -C libft > /dev/null 2>&1
-	@echo "push_swap successfully cleaned!"
+	@echo "$(DARK_GREEN)Program's object files successfully cleaned!$(RESET_COLOR)"
 
 fclean: clean
 	@rm -f $(NAME) $(CHECKER)
 	@$(FCLEAN_LIBFT)
+	@echo "$(RED)Program successfully removed!$(RESET_COLOR)"
 
 re: fclean all
 
