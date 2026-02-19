@@ -86,7 +86,7 @@ push_swap42/
 ### Prerequisites
 - GCC or Clang compiler
 - Make
-- Libft
+- Libc
 
 ### Compile
 
