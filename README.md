@@ -187,6 +187,7 @@ Watch the push_swap algorithm in action, sorting 100 numbers with the visualizer
         alt="Push Swap Demo" 
         width="350" 
         height="350"
+        aligned="left"
         >
 </div>
 
