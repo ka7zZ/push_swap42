@@ -182,7 +182,12 @@ ARG=$(shuf -i 1-1000 -n 100 | tr '\n' ' '); ./push_swap $ARG | ./checker $ARG
 Watch the push_swap algorithm in action, sorting 100 numbers with the visualizer:
 
 <div align="center">
-  <img src="assets/push_swap_demo.gif" alt="Push Swap Demo" width="200">
+  <img 
+        src="assets/push_swap_demo.gif" 
+        alt="Push Swap Demo" 
+        width="350" 
+        height="350"
+        >
 </div>
 
 **What you're seeing in the demo:**
