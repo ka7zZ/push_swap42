@@ -75,7 +75,7 @@ push_swap42/
 │       ├── checker.c                 # Checker main program
 │       └── create_list.c             # Stack creation utilities
 ├── Makefile                    # Build configuration
-└──  README.md                   # This file
+└── README.md                   # This file
 ```
 
 
@@ -181,15 +181,20 @@ ARG=$(shuf -i 1-1000 -n 100 | tr '\n' ' '); ./push_swap $ARG | ./checker $ARG
 
 Watch the push_swap algorithm in action, sorting 100 numbers with the visualizer:
 
-<div align="center">
-  <img 
-        src="assets/push_swap_demo.gif" 
-        alt="Push Swap Demo" 
-        width="350" 
-        height="350"
-        aligned="left"
-        >
-</div>
+<table>
+    <tr>
+        <td width="60%">https://github.com/user-attachments/assets/push_swap_cast.mp4</td>
+        <td width="40%">
+        <b>What you're seeing in the demo:</b>
+        <ul>
+            <li>🎯 Stack A (left) starts with 100 unsorted numbers as colored bars</li>
+            <li>🔄 The algorithm uses radix sort to efficiently sort by binary representation</li>
+            <li>📊 Stack B (right) temporarily holds numbers during sorting</li>
+            <li>✅ Final result: All 100 numbers perfectly sorted in ~860 operations!</li>
+        </ul>
+        </td>
+  </tr>
+</table>
 
 **What you're seeing in the demo:**
 - Stack A (left) starts with 100 unsorted numbers as colored bars
