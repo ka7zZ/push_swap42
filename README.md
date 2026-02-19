@@ -201,9 +201,3 @@ Watch the push_swap algorithm in action, sorting 100 numbers with the visualizer
 		</td>
   </tr>
 </table>
-
-**What you're seeing in the demo:**
-- Stack A (left) starts with 100 unsorted numbers as colored bars
-- The algorithm uses radix sort to efficiently sort by binary representation
-- Stack B (right) temporarily holds numbers during sorting
-- Final result: All 100 numbers perfectly sorted in ~860 operations!
