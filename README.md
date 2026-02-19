@@ -183,14 +183,14 @@ Watch the push_swap algorithm in action, sorting 100 numbers with the visualizer
 
 <table>
 	<tr>
-		<td width="60%">
+		<td width="40%">
 			<img
 				src="assets/push_swap_demo.gif"
 				alt="Push Swap Demo"
 				width="350"
 				height="350"
 			>
-		<td width="40%">
+		<td width="60%">
 		<b>What you're seeing in the demo:</b>
 		<ul>
 			<li>Stack A (left) starts with 100 unsorted numbers as colored bars</li>
