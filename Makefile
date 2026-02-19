@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 18:46:55 by aghergut          #+#    #+#              #
-#    Updated: 2025/03/10 16:02:22 by aghergut         ###   ########.fr        #
+#    Updated: 2026/02/19 12:03:22 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,8 @@ FCLEAN_LIBFT = @make fclean -C $(LIBFT)
 FLAGS_LIBFT = -Llibft -lft
 
 # INCLUDES
-INCLUDES_NORMAL = -Ilibft -Iinclude/push_swap.h
-INCLUDES_CHECKER = -Ilibft -Iinclude/checker.h
+INCLUDES_NORMAL = -Ilibft -Iinclude
+INCLUDES_CHECKER = -Ilibft -Iinclude
 
 # SOURCES
 SRCS_MANDATORY = 	srcs/mandatory/instructions/push_case.c \
@@ -89,7 +89,7 @@ $(CHECKER): $(OBJS_CHECKER)
 
 $(OBJS_CHECK)%.o: %.c
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(INCLUDES_CHECKER) -c $< -o $@
+	@$(COMPILER) $(CFLAGS) $(INCLUDES_CHECKER) -c $< -o $@
 	
 clean:
 	@rm -Rf $(OBJS_PUSH) $(OBJS_CHECK)
